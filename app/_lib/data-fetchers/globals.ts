@@ -1,21 +1,9 @@
 import { Job } from "@prisma/client";
 import { prisma } from "../utils/globals";
 
-export async function updateDB(jobs: Job[]) {
+export async function updateDB(jobs: Omit<Job, "id">[]) {
   const jobsAdded: Job[] = [];
   const promises = jobs.map(async (job) => {
-    const jobData = {
-      title: job.title,
-      company: job.company,
-      location: job.location,
-      jobLink: job.jobLink,
-      postedDate: job.postedDate,
-      hiringStatus: job.hiringStatus,
-      salary: job.salary,
-      scrapedAt: job.scrapedAt,
-      pageNumber: job.pageNumber,
-      companyLogoURL: job.companyLogoURL,
-    };
     try {
       const jobDoc = await prisma.job.upsert({
         where: {
@@ -25,8 +13,8 @@ export async function updateDB(jobs: Job[]) {
             location: job.location,
           },
         },
-        create: jobData,
-        update: jobData,
+        create: job,
+        update: job,
       });
       jobsAdded.push(jobDoc);
     } catch (error) {

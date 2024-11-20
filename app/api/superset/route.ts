@@ -1,21 +1,27 @@
-import { JOBS_URLS, TEST_URL } from "@/app/_lib/config/globals";
+import { JOBS_URLS } from "@/app/_lib/config/globals";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  JOBS_URLS.forEach(async (url) => {
+  const startTime = new Date().getTime();
+  const fetchPromises = JOBS_URLS.map(async (url) => {
     console.log("Calling GET: ", url);
     try {
-      const res = await fetch(TEST_URL);
+      const res = await fetch(url);
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
       const data = await res.json();
       console.log(url, "response: ", data);
-      console.log("Pause of 1 minute");
-      new Promise((resolve) => setTimeout(resolve, 1000 * 60 * 1));
+      return data;
     } catch (error) {
-      console.log(`error in GET ${url}`, error);
+      console.log(`Error in GET ${url}:`, error);
+      return null;
     }
   });
-  return NextResponse.json({ message: "Hello from the API" }, { status: 200 });
+  await Promise.all(fetchPromises);
+  const endTime = new Date().getTime();
+  return NextResponse.json(
+    { timeTaken: endTime - startTime, message: "Data Updated Successfully." },
+    { status: 200 }
+  );
 }

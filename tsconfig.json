@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_lib/utils/linkedin.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_lib/utils/linkedin.js", "app/_lib/data-fetchers/extractData.ts"],
   "exclude": ["node_modules"]
 }

@@ -17,7 +17,7 @@ model Job {
   hiringStatus   String?
   salary         String?
   scrapedAt      String?
-  pageNumber     Int?
+  keyword        String?
   companyLogoURL String?
 
   @@unique([title, company, location], name: "JobUniqueIndex")
