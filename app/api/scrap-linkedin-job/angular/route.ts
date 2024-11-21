@@ -13,31 +13,33 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const keyword = ANGULAR;
   const location = INDIA;
-  const allResults = [];
   const startTime = new Date().getTime();
-  for (let i = 1; i <= MAX_PAGES; i++) {
+  const fetchPageWithRetry = async (page: number): Promise<any[]> => {
     let retries = 0;
-    let success = false;
-    while (retries < MAX_RETRIES && !success) {
+    while (retries < MAX_RETRIES) {
       try {
-        const { data } = await axios.get(generateURL(keyword, location, i));
+        const { data } = await axios.get(generateURL(keyword, location, page));
         const extractedData = extractData(data, keyword);
-        const filteredJobs = filterData(extractedData);
-        allResults.push(...filteredJobs);
-        success = true;
+        return filterData(extractedData);
       } catch (error: any) {
         retries++;
         console.log(
-          `Error fetching ${keyword} page ${i}, retry attempt ${retries}: ${error.message}`
+          `Error fetching ${keyword} page ${page}, retry attempt ${retries}: ${error.message}`
         );
-        if (retries > MAX_RETRIES) {
+        if (retries >= MAX_RETRIES) {
           console.log(
-            `Max retries reached for ${keyword} for page ${i}. Skipping this page.`
+            `Max retries reached for ${keyword} for page ${page}. Skipping this page.`
           );
         }
       }
     }
-  }
+    return [];
+  };
+  const fetchPromises = Array.from({ length: MAX_PAGES }, (_, i) =>
+    fetchPageWithRetry(i + 1)
+  );
+  const allPagesResults = await Promise.all(fetchPromises);
+  const allResults = allPagesResults.flat();
   const updatedJobs = await updateDB(allResults);
   const endTime = new Date().getTime();
   return NextResponse.json(
