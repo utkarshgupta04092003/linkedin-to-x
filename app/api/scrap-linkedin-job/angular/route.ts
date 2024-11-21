@@ -10,6 +10,8 @@ import { generateURL } from "@/app/_lib/utils/globals";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
+export const maxDuration = 55;
+
 export async function GET() {
   const keyword = ANGULAR;
   const location = INDIA;
