@@ -1,11 +1,11 @@
-import { Job } from "@prisma/client";
+import { Jobs } from "@prisma/client";
 import { prisma } from "../utils/globals";
 
-export async function updateDB(jobs: Omit<Job, "id">[]) {
-  const jobsAdded: Job[] = [];
+export async function updateDB(jobs: Omit<Jobs, "id">[]) {
+  const jobsAdded: Jobs[] = [];
   const promises = jobs.map(async (job) => {
     try {
-      const jobDoc = await prisma.job.upsert({
+      const jobDoc = await prisma.jobs.upsert({
         where: {
           JobUniqueIndex: {
             title: job.title,

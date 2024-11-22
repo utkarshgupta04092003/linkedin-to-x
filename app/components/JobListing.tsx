@@ -1,13 +1,13 @@
 "use client";
 
-import { Job } from "@prisma/client";
+import { Jobs } from "@prisma/client";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaBriefcase, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function JobListings() {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [jobs, setJobs] = useState<Jobs[]>([]);
 
   useEffect(() => {
     async function fetchJobs() {
