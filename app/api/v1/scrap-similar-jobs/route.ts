@@ -43,7 +43,7 @@ const scrapSimilarJobs = async () => {
   });
   const promises = companyData.map(async (data) => {
     try {
-      const resData = await fetchData(data.jobLink, 10);
+      const resData = await fetchData(data.jobLink, 5);
       const extractedData = await extractSimilarJobsData(resData);
       const filteredData = filterData(extractedData);
       scrapedData.push(...filteredData);
