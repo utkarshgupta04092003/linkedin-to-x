@@ -47,7 +47,12 @@ model JobsTemp {
   @@unique([title, company, location], name: "JobUniqueIndex")
 }
 
-model temp {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
+model MetaData {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  totalJobs               Int
+  totalXPostedJobs        Int
+  totalSimilarJobsUpdated Int
+
+  createdAt DateTime @default(now())
 }
