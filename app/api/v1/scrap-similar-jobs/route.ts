@@ -22,8 +22,9 @@ export async function GET() {
       { status: 200 }
     );
   } catch (error) {
-    console.log("error", error);
-    return NextResponse.json({ message: "Internal Server Error" });
+    return NextResponse.json({
+      message: "Internal Server Error in scrapSimilarJobs",
+    });
   }
 }
 

@@ -153,7 +153,7 @@ export const getCompanyLogoURL = async (companyPageURL: string) => {
     const response = await axios.get(companyPageURL);
     const $ = cheerio.load(response.data);
     const companyLogoURL = $("img").attr("src");
-    return companyLogoURL || "";
+    return companyLogoURL || null;
   } catch (error) {
     throw error;
   }
