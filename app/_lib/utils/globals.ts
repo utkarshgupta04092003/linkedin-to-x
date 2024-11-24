@@ -23,9 +23,14 @@ export const filterData = (data: LinkedinScrapeJob[]) => {
   return filteredData;
 };
 
-export const formatResponseMessage = (count: number, timeTaken: number) => {
+export const formatResponseMessage = (
+  count: number,
+  timeTaken: number,
+  others?: { [key: string]: any }
+) => {
   return {
     message: "Total " + count + " rows updated in DB",
     timeTaken,
+    ...others,
   };
 };

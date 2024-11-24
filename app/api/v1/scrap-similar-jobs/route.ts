@@ -18,7 +18,13 @@ export async function GET() {
     const scrapedJobs = await scrapSimilarJobs();
     const endTime = new Date().getTime();
     return NextResponse.json(
-      formatResponseMessage(scrapedJobs.length, endTime - startTime),
+      formatResponseMessage(
+        scrapedJobs?.updatedRows?.length,
+        endTime - startTime,
+        {
+          updatedJobs: scrapedJobs?.updatedJobs,
+        }
+      ),
       { status: 200 }
     );
   } catch (error) {
@@ -67,5 +73,5 @@ const scrapSimilarJobs = async () => {
       isSimilarJobsUpdated: true,
     },
   });
-  return scrapedData;
+  return { updatedRows: scrapedData, updatedJobs: successJobs };
 };
