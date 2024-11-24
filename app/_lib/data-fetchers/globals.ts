@@ -1,6 +1,40 @@
 import { Jobs } from "@prisma/client";
+import axios from "axios";
+import { MAX_PAGES, MAX_RETRIES } from "../config/globals";
 import { LinkedinScrapeJob } from "../declarations/globals";
-import { prisma } from "../utils/globals";
+import { filterData, generateURL, prisma } from "../utils/globals";
+import { extractData } from "./extractData";
+
+export const scrapJobs = async (keyword: string, location: string) => {
+  const fetchPageWithRetry = async (page: number): Promise<any[]> => {
+    let retries = 0;
+    while (retries < MAX_RETRIES) {
+      try {
+        const { data } = await axios.get(generateURL(keyword, location, page));
+        const extractedData = await extractData(data);
+        return filterData(extractedData);
+      } catch (error: any) {
+        retries++;
+        console.log(
+          `Error fetching ${keyword} page ${page}, retry attempt ${retries}: ${error.message}`
+        );
+        if (retries >= MAX_RETRIES) {
+          console.log(
+            `Max retries reached for ${keyword} for page ${page}. Skipping this page.`
+          );
+        }
+      }
+    }
+    return [];
+  };
+  const fetchPromises = Array.from({ length: MAX_PAGES }, (_, i) =>
+    fetchPageWithRetry(i + 1)
+  );
+  const allPagesResults = await Promise.all(fetchPromises);
+  const allResults = allPagesResults.flat();
+  const updatedJobs = await updateDB(allResults);
+  return updatedJobs;
+};
 
 export async function updateDB(jobs: LinkedinScrapeJob[]) {
   const jobsAdded: Jobs[] = [];

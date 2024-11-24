@@ -10,6 +10,8 @@ import {
 } from "@/app/_lib/utils/globals";
 import { NextResponse } from "next/server";
 
+export const maxDuration = 60;
+
 export async function GET() {
   try {
     const startTime = new Date().getTime();

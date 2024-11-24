@@ -3,11 +3,12 @@ import * as cheerio from "cheerio"; // Ensure cheerio is installed
 import { HIRING_MESSAGE } from "../config/globals";
 import { LinkedinScrapeJob } from "../declarations/globals";
 
-export const extractData = (data: string, keyword: string) => {
+export const extractData = async (data: string) => {
   const $ = cheerio.load(data);
   const jobs: LinkedinScrapeJob[] = [];
 
-  $("li").each((_, element) => {
+  const elements = $("li").toArray();
+  for (const element of elements) {
     const title = $(element).find(".base-search-card__title").text().trim();
     const company = $(element)
       .find(".base-search-card__subtitle")
@@ -30,10 +31,12 @@ export const extractData = (data: string, keyword: string) => {
       $(element).find(".job-search-card__listdate--new").attr("datetime") ||
       $(element).find(".job-search-card__listdate").attr("datetime") ||
       "";
+    const companyPageURL =
+      $(element).find(".hidden-nested-link").attr("href") || "";
     const companyLogoURL =
-      $(element).find(".artdeco-entity-image").attr("data-delayed-url") || "";
+      $(element).find(".artdeco-entity-image").attr("data-delayed-url") ||
+      (companyPageURL && (await getCompanyLogoURL(companyPageURL)));
 
-    // TODO: FIX THIS COMPANY PAGE URL
     if (title && company && location) {
       jobs.push({
         title,
@@ -43,13 +46,13 @@ export const extractData = (data: string, keyword: string) => {
         postedDate,
         hiringStatus,
         salary,
+        companyPageURL,
         companyLogoURL,
-        companyPageURL: "",
-        keyword,
+        keyword: null,
         scrapedAt: new Date().toISOString(),
       });
     }
-  });
+  }
   return jobs;
 };
 
