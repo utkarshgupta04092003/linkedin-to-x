@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { LinkedinScrapeJob } from "../declarations/globals";
 import moment from "moment";
 import { ALLOWED_TIME_DIFF } from "../config/globals";
+import { LinkedinScrapeJob } from "../declarations/globals";
 
 export const prisma = new PrismaClient();
 
@@ -21,4 +21,11 @@ export const filterData = (data: LinkedinScrapeJob[]) => {
     return diff < ALLOWED_TIME_DIFF;
   });
   return filteredData;
+};
+
+export const formatResponseMessage = (count: number, timeTaken: number) => {
+  return {
+    message: "Total " + count + " rows updated in DB",
+    timeTaken,
+  };
 };

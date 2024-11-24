@@ -7,7 +7,7 @@ export const extractData = (data: string, keyword: string) => {
   const $ = cheerio.load(data);
   const jobs: LinkedinScrapeJob[] = [];
 
-    $("li").each((index, element) => {
+  $("li").each((_, element) => {
     const title = $(element).find(".base-search-card__title").text().trim();
     const company = $(element)
       .find(".base-search-card__subtitle")
@@ -33,6 +33,7 @@ export const extractData = (data: string, keyword: string) => {
     const companyLogoURL =
       $(element).find(".artdeco-entity-image").attr("data-delayed-url") || "";
 
+    // TODO: FIX THIS COMPANY PAGE URL
     if (title && company && location) {
       jobs.push({
         title,
@@ -43,6 +44,7 @@ export const extractData = (data: string, keyword: string) => {
         hiringStatus,
         salary,
         companyLogoURL,
+        companyPageURL: "",
         keyword,
         scrapedAt: new Date().toISOString(),
       });
@@ -92,10 +94,7 @@ export async function fetchData(
   );
 }
 
-export const extractSimilarJobsData = async (
-  similarJobsData: any,
-  keyword: string
-) => {
+export const extractSimilarJobsData = async (similarJobsData: any) => {
   try {
     const $ = cheerio.load(similarJobsData);
     const jobs: LinkedinScrapeJob[] = [];
@@ -134,7 +133,8 @@ export const extractSimilarJobsData = async (
           hiringStatus: HIRING_MESSAGE,
           salary,
           companyLogoURL,
-          keyword: keyword,
+          companyPageURL,
+          keyword: null,
           scrapedAt: new Date().toISOString(),
         });
       }

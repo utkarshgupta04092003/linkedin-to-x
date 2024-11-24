@@ -4,9 +4,13 @@ import {
   MAX_RETRIES,
   REACT,
 } from "@/app/_lib/config/globals";
-import { extractData, filterData } from "@/app/_lib/data-fetchers/extractData";
+import { extractData } from "@/app/_lib/data-fetchers/extractData";
 import { updateDB } from "@/app/_lib/data-fetchers/globals";
-import { generateURL } from "@/app/_lib/utils/globals";
+import {
+  filterData,
+  formatResponseMessage,
+  generateURL,
+} from "@/app/_lib/utils/globals";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
@@ -45,10 +49,7 @@ export async function GET() {
   const updatedJobs = await updateDB(allResults);
   const endTime = new Date().getTime();
   return NextResponse.json(
-    {
-      message: `Total ${updatedJobs.length} rows updated in DB`,
-      timeTaken: endTime - startTime,
-    },
+    formatResponseMessage(updatedJobs.length, endTime - startTime),
     { status: 200 }
   );
 }
