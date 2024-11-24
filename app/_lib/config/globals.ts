@@ -21,3 +21,10 @@ export const INDIA = "India";
 export const ALLOWED_TIME_DIFF = 7; // in days
 export const MAX_RETRIES = 3; // Retry up to 3 times for each request
 export const MAX_PAGES = 10; // Scrap up to 10 pages
+
+export const SIMILAR_JOBS_MAX_RETRIES = 5;
+
+export const ERROR_MESSAGE_429 =
+  "Error: Too many requests (429). Returning empty string.";
+
+export const HIRING_MESSAGE = "Actively hiring";

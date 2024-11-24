@@ -1,12 +1,6 @@
-export type LinkedinScrapeJob = {
-  title: string;
-  company: string;
-  location: string;
-  jobLink: string;
-  postedDate: string;
-  hiringStatus: string;
-  salary: string;
-  companyLogoURL: string;
-  keyword: string;
-  scrapedAt: string;
-};
+import { Jobs } from "@prisma/client";
+
+export type LinkedinScrapeJob = Omit<
+  Jobs,
+  "id" | "updatedAt" | "isXPosted" | "isSimilarJobsUpdated"
+>;

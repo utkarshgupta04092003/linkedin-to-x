@@ -8,19 +8,41 @@ datasource db {
 }
 
 model Jobs {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  title          String
-  company        String
-  location       String
-  jobLink        String
-  postedDate     String?
-  hiringStatus   String?
-  salary         String?
-  scrapedAt      String?
-  keyword        String?
-  companyLogoURL String?
-  isXPosted      Boolean  @default(false)
-  updatedAt      DateTime @updatedAt
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                String
+  company              String
+  location             String
+  jobLink              String
+  postedDate           String?
+  hiringStatus         String?
+  salary               String?
+  scrapedAt            String
+  keyword              String?
+  companyLogoURL       String?
+  companyPageURL       String?
+  isXPosted            Boolean  @default(false)
+  isSimilarJobsUpdated Boolean  @default(false)
+  updatedAt            DateTime @updatedAt
+
+  @@unique([title, company, location], name: "JobUniqueIndex")
+}
+
+model JobsTemp {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                String
+  company              String
+  location             String
+  jobLink              String
+  postedDate           String?
+  hiringStatus         String?
+  salary               String?
+  scrapedAt            String
+  keyword              String?
+  companyLogoURL       String?
+  companyPageURL       String?
+  isXPosted            Boolean  @default(false)
+  isSimilarJobsUpdated Boolean  @default(false)
+  updatedAt            DateTime @updatedAt
 
   @@unique([title, company, location], name: "JobUniqueIndex")
 }
