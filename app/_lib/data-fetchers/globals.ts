@@ -40,7 +40,7 @@ export async function updateDB(jobs: LinkedinScrapeJob[]) {
   const jobsAdded: Jobs[] = [];
   const promises = jobs.map(async (job) => {
     try {
-      const jobDoc = await prisma.jobsTemp.upsert({
+      const jobDoc = await prisma.jobs.upsert({
         where: {
           JobUniqueIndex: {
             title: job.title,

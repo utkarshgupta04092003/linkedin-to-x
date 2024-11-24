@@ -30,7 +30,7 @@ export async function GET() {
 const scrapSimilarJobs = async () => {
   const scrapedData: any[] = [];
   const successJobs: string[] = [];
-  const companyData = await prisma.jobsTemp.findMany({
+  const companyData = await prisma.jobs.findMany({
     where: {
       isSimilarJobsUpdated: false,
     },
@@ -56,7 +56,7 @@ const scrapSimilarJobs = async () => {
   });
   await Promise.all(promises);
   await updateDB(scrapedData);
-  await prisma.jobsTemp.updateMany({
+  await prisma.jobs.updateMany({
     where: {
       id: {
         in: successJobs,
