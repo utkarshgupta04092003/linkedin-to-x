@@ -16,12 +16,14 @@ model Jobs {
   postedDate           String?
   hiringStatus         String?
   salary               String?
-  scrapedAt            String
   keyword              String?
   companyLogoURL       String?
   companyPageURL       String?
   isXPosted            Boolean  @default(false)
+  isTelegramPosted     Boolean  @default(false)
   isSimilarJobsUpdated Boolean  @default(false)
+  visitCount           Int      @default(0)
+  scrapedAt            String
   updatedAt            DateTime @updatedAt
 
   @@unique([title, company, location], name: "JobUniqueIndex")
@@ -36,12 +38,14 @@ model JobsTemp {
   postedDate           String?
   hiringStatus         String?
   salary               String?
-  scrapedAt            String
   keyword              String?
   companyLogoURL       String?
   companyPageURL       String?
   isXPosted            Boolean  @default(false)
+  isTelegramPosted     Boolean  @default(false)
   isSimilarJobsUpdated Boolean  @default(false)
+  visitCount           Int?     @default(0)
+  scrapedAt            String
   updatedAt            DateTime @updatedAt
 
   @@unique([title, company, location], name: "JobUniqueIndex")

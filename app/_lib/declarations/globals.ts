@@ -2,5 +2,10 @@ import { Jobs } from "@prisma/client";
 
 export type LinkedinScrapeJob = Omit<
   Jobs,
-  "id" | "updatedAt" | "isXPosted" | "isSimilarJobsUpdated"
+  | "id"
+  | "updatedAt"
+  | "isXPosted"
+  | "isSimilarJobsUpdated"
+  | "isTelegramPosted"
+  | "visitCount"
 >;
