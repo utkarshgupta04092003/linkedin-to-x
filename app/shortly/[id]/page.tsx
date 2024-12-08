@@ -2,9 +2,7 @@ import { prisma } from "@/app/_lib/utils/globals";
 import { redirect } from "next/navigation";
 
 type Props = {
-  params: {
-    id: string;
-  };
+  params: { id: string } & Promise<any>;
 };
 
 export default async function ShortlyPage({ params }: Props) {
