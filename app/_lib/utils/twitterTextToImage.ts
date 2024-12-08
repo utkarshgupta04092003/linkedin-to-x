@@ -19,7 +19,7 @@ export const generateTwitterLikeImage = async (
     const logoImageSrc = path.join(process.cwd(), "public", "logo.png");
     // TODO: remove this after testing in prod
     console.log("logoImageSrc", logoImageSrc);
-    const username = TWITTER_USERNAME;
+    // const username = TWITTER_USERNAME;
     const handle = TWITTER_HANDLE;
 
     const fontSize = 22;
@@ -95,7 +95,7 @@ export const generateTwitterLikeImage = async (
             const textX = logoX + logoSize + 10;
             ctx.fillStyle = "black";
             ctx.font = `bold ${fontSize}px Arial`;
-            ctx.fillText('onedotjob, textX, logoY + logoSize / 2);
+            ctx.fillText("onedotjob", textX, logoY + logoSize / 2);
 
             ctx.fillStyle = "#657786";
             ctx.font = `normal ${fontSize}px Arial`;
