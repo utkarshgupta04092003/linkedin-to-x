@@ -8,13 +8,8 @@ import path from "path";
 import { TWITTER_HANDLE, TWITTER_USERNAME } from "../config/twitter";
 import { getCurrentFormatTimeStamp, getRandomHashtags } from "./globals";
 
-const fontPath = path.join(
-  process.cwd(),
-  "public",
-  "fonts",
-  "NotoColorEmoji.ttf"
-);
-registerFont(fontPath, { family: "Noto Color Emoji" });
+const fontPath = path.join(process.cwd(), "public", "fonts", "Arial.ttf");
+registerFont(fontPath, { family: "Arial" });
 
 export const generateTwitterLikeImage = async (
   content: string
@@ -107,16 +102,16 @@ export const generateTwitterLikeImage = async (
             // Add username and handle
             const textX = logoX + logoSize + 10;
             ctx.fillStyle = "black";
-            ctx.font = `bold ${fontSize}px Arial, "Noto Color Emoji", Helvetica, sans-serif`;
+            ctx.font = `bold ${fontSize}px Arial, Helvetica, sans-serif`;
             ctx.fillText(username, textX, logoY + logoSize / 2);
 
             ctx.fillStyle = "#657786";
-            ctx.font = `normal ${fontSize}px Arial, "Noto Color Emoji", Helvetica, sans-serif`;
+            ctx.font = `normal ${fontSize}px Arial, Helvetica, sans-serif`;
             ctx.fillText(handle, textX, logoY + logoSize / 2 + 30);
 
             // Add tweet content
             ctx.fillStyle = "#14171A";
-            ctx.font = `normal ${fontSize}px Arial, "Noto Color Emoji", Helvetica, sans-serif`;
+            ctx.font = `normal ${fontSize}px Arial, Helvetica, sans-serif`;
             const maxTextWidth = tweetBoxWidth - 40;
             const lineHeight = fontSize + 8;
             drawMultilineText(
@@ -134,9 +129,7 @@ export const generateTwitterLikeImage = async (
 
             // Add tweet timestamp
             ctx.fillStyle = "#657786";
-            ctx.font = `normal ${
-              fontSize - 4
-            }px Arial, "Noto Color Emoji", Helvetica, sans-serif`;
+            ctx.font = `normal ${fontSize - 4}px Arial, Helvetica, sans-serif`;
             ctx.fillText(
               getCurrentFormatTimeStamp(new Date()),
               x + 40,
