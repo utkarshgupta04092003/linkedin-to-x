@@ -95,7 +95,7 @@ export const generateTwitterLikeImage = async (
             const textX = logoX + logoSize + 10;
             ctx.fillStyle = "black";
             ctx.font = `bold ${fontSize}px Arial`;
-            ctx.fillText(username, textX, logoY + logoSize / 2);
+            ctx.fillText('onedotjob, textX, logoY + logoSize / 2);
 
             ctx.fillStyle = "#657786";
             ctx.font = `normal ${fontSize}px Arial`;
