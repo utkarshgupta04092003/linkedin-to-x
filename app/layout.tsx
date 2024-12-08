@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "LinkedJobs",
-  description: "Get Linkedin Jobs Easily",
+  title: "Onedotjob",
+  description: "Get All LinkedIn Jobs in One Step, Easily",
 };
 
 export default function RootLayout({

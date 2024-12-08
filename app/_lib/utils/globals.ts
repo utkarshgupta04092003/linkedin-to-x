@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import moment from "moment";
 import { ALLOWED_TIME_DIFF } from "../config/globals";
-import { LinkedinScrapeJob } from "../declarations/globals";
 import { TWITTER_HASHTAGS } from "../config/twitter";
+import { LinkedinScrapeJob } from "../declarations/globals";
 
 export const prisma = new PrismaClient();
 
@@ -39,7 +39,7 @@ export const formatResponseMessage = (
 };
 
 export const generateShortURL = (id: string) => {
-  const url = `${process.env.DOMAIN}/api/v1/shortly/${id}`;
+  const url = `${process.env.DOMAIN}/shortly/${id}`;
   return url;
 };
 
