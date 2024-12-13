@@ -22,15 +22,17 @@ export const generateTwitterLikeImage = async (
     const backgroundImageSrc = path.join(
       process.cwd(),
       "public",
-      "bg-image.jpg"
+      "post-background.jpg"
     );
-    const logoImageSrc = path.join(process.cwd(), "public", "logo.png");
-    // TODO: remove this after testing in prod
-    console.log("logoImageSrc", logoImageSrc);
+    const logoImageSrc = path.join(
+      process.cwd(),
+      "public",
+      "onedotjob-logo.png"
+    );
     const username = TWITTER_USERNAME;
     const handle = TWITTER_HANDLE;
 
-    const fontSize = 22;
+    const fontSize = 25;
     const canvasWidth = 800;
     const canvasHeight = 500;
     const tweetBoxWidth = 700;
@@ -47,7 +49,7 @@ export const generateTwitterLikeImage = async (
     ) => {
       const lines = text.split("\n");
       lines.forEach((line, index) => {
-        const lineY = y + index * lineHeight;
+        const lineY = y + index * lineHeight - 20;
         ctx.fillText(line, x, lineY, maxWidth);
       });
     };
@@ -94,7 +96,7 @@ export const generateTwitterLikeImage = async (
         // Load and draw the logo image
         loadImage(logoImageSrc)
           .then((logoImage) => {
-            const logoSize = 80;
+            const logoSize = 70;
             const logoX = x + 40;
             const logoY = y + 10;
             ctx.drawImage(logoImage, logoX, logoY + 10, logoSize, logoSize);
