@@ -30,14 +30,18 @@ export async function GET(request: Request) {
       latestJobs.postedDate ?? ""
     );
     const image = await generateTwitterLikeImage(content);
-    const imagePath = await uploadToCloudinary(image);
+    const imagePath = await uploadToCloudinary(
+      image,
+      "automate-linkedin/twitter-post",
+      `job-id-${latestJobs.id}`
+    );
     const res = await postToTwitter(
       getTwitterText(latestJobs.company, latestJobs?.jobLink),
       imagePath
     );
     await updateJob(latestJobs.id);
     return NextResponse.json({
-      message: `Job ${latestJobs.id} posted successfully with tweet id ${res}`,
+      message: `Job ${latestJobs.id} posted successfully with tweet id ${res.data.id}`,
     });
   } catch (error) {
     return NextResponse.json({ message: "Internal server error", error });

@@ -6,13 +6,17 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const uploadToCloudinary = (base64Image: string): Promise<string> => {
+export const uploadToCloudinary = (
+  base64Image: string,
+  folderName: string,
+  fileName: string
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(
       base64Image,
       {
-        folder: "generated-tweets",
-        public_id: `tweet-${Date.now()}`,
+        folder: folderName,
+        public_id: fileName,
       },
       (error, result) => {
         if (error || !result) reject(error);

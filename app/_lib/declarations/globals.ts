@@ -8,4 +8,6 @@ export type LinkedinScrapeJob = Omit<
   | "isSimilarJobsUpdated"
   | "isTelegramPosted"
   | "visitCount"
+  | "isLinkedInPosted"
+  | "isInstagramPosted"
 >;

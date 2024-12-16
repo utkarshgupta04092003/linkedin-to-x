@@ -21,6 +21,8 @@ model Jobs {
   companyPageURL       String?
   isXPosted            Boolean  @default(false)
   isTelegramPosted     Boolean  @default(false)
+  isLinkedInPosted     Boolean  @default(false)
+  isInstagramPosted    Boolean  @default(false)
   isSimilarJobsUpdated Boolean  @default(false)
   visitCount           Int      @default(0)
   scrapedAt            String
@@ -43,8 +45,10 @@ model JobsTemp {
   companyPageURL       String?
   isXPosted            Boolean  @default(false)
   isTelegramPosted     Boolean  @default(false)
+  isLinkedInPosted     Boolean  @default(false)
+  isInstagramPosted    Boolean  @default(false)
   isSimilarJobsUpdated Boolean  @default(false)
-  visitCount           Int?     @default(0)
+  visitCount           Int      @default(0)
   scrapedAt            String
   updatedAt            DateTime @updatedAt
 
