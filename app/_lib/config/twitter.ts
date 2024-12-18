@@ -1,7 +1,8 @@
 export const TWITTER_USERNAME = "OnedotJob";
 export const TWITTER_HANDLE = "@onedotjob";
-export const TWITTER_URL = "https://twitter.com/OnedotJob";
+export const TWITTER_URL = "https://x.com/onedotjob";
 export const TELEGRAM_CHANNEL_URL = "https://t.me/onedotjob";
+export const LINKEDIN_PAGE_URL = "https://www.linkedin.com/company/onedotjobb";
 export const TWITTER_HASHTAGS = [
   "#JobAlert",
   "#HiringNow",

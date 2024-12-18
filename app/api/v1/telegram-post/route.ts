@@ -1,9 +1,11 @@
-import { generateShortURL, prisma } from "@/app/_lib/utils/globals";
-import { getFormattedJobForTelegram } from "@/app/_lib/utils/telegram";
+import { prisma } from "@/app/_lib/utils/globals";
+import { getMultipleFormattedJob } from "@/app/_lib/utils/linkedin";
 import { Jobs } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 const ROUTE_ACCESS_KEY = process.env.TELEGRAM_ROUTE_ACCESS_KEY;
+const JOB_COUNT = 5;
+
 export async function GET(request: Request) {
   try {
     const headers = request.headers;
@@ -14,22 +16,19 @@ export async function GET(request: Request) {
         { status: 401 }
       );
     }
-    const latestJobs = await getLatestJob();
-    if (!latestJobs) {
+    const latestJobs = await getLatestJob(JOB_COUNT);
+    if (!latestJobs || latestJobs.length === 0) {
       return NextResponse.json({ message: "No new jobs found", error: null });
     }
-    const shortURL = generateShortURL(latestJobs.id);
-    const content = getFormattedJobForTelegram(
-      latestJobs.company,
-      latestJobs.title,
-      latestJobs.location,
-      latestJobs.postedDate ?? "",
-      shortURL
-    );
-    await postToTelegram(content);
-    await updateJob(latestJobs.id);
+    const content = getMultipleFormattedJob(latestJobs);
+    const messageId = await postToTelegram(content);
+    await updateJob(latestJobs);
     return NextResponse.json({
-      message: `Job ${latestJobs.id} posted successfully to telegram`,
+      message: `Job ${latestJobs
+        .map((job) => job.id)
+        .join(
+          ", "
+        )} posted successfully to telegram with messageId: ${messageId}`,
     });
   } catch (error) {
     return NextResponse.json(
@@ -39,24 +38,21 @@ export async function GET(request: Request) {
   }
 }
 
-const getLatestJob = async (): Promise<Jobs | null> => {
-  const latestJobs = await prisma.jobs.findFirst({
+const getLatestJob = async (count: number): Promise<Jobs[] | null> => {
+  const latestJobs = await prisma.jobs.findMany({
     where: {
       isTelegramPosted: false,
     },
     orderBy: {
       postedDate: "desc",
     },
+    take: count,
   });
-  if (
-    !latestJobs ||
-    !latestJobs.company ||
-    !latestJobs.title ||
-    !latestJobs.jobLink
-  ) {
-    return null;
-  }
-  return latestJobs;
+  const jobs: Jobs[] = [];
+  latestJobs.forEach(
+    (job) => job.company && job.title && job.jobLink && jobs.push(job)
+  );
+  return jobs;
 };
 
 const postToTelegram = async (content: string) => {
@@ -78,13 +74,17 @@ const postToTelegram = async (content: string) => {
   if (response.status !== 200) {
     throw new Error("Failed to post to Telegram");
   }
-  console.log("responssse", await response.json());
+  const responseJson = await response.json();
+  return responseJson.result.message_id;
 };
 
-const updateJob = async (jobId: Jobs["id"]) => {
-  await prisma.jobs.update({
+const updateJob = async (jobs: Jobs[]) => {
+  const jobIds = jobs.map((job) => job.id);
+  await prisma.jobs.updateMany({
     where: {
-      id: jobId,
+      id: {
+        in: jobIds,
+      },
     },
     data: {
       isTelegramPosted: true,

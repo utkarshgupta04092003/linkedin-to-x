@@ -19,3 +19,38 @@ export const linkedinJobTemplates = [
 
   "🚨 Don’t Miss This Opportunity! \n\nA fantastic role for a {jobRole} is open at {companyName}. Whether you’re ready for a new challenge or know someone who’d be perfect. \n\n👉 Don’t wait for the deadline: {jobURL} \n\n👉 Follow for updates on Twitter: {twitterLink} \n👉 Join us on Telegram: {telegramLink} \n👉 Follow here for more amazing opportunities! \n\n#DreamJob #JobsNow #OpportunityKnocks",
 ];
+
+export const linkedinJobTemplatesTop = [
+  "🚀 Exciting Job Opportunity! Looking to take your career to the next level? We’ve got a role that could be perfect for you.\n\n",
+  "🌟 Attention Innovators! An incredible opportunity awaits for professionals eager to make a difference.\n\n",
+  "✨ Make an Impact with Your Career! Discover a chance to work in an environment that values innovation and creativity.\n\n",
+  "🚀 Ready to Grow Your Career? Here’s an amazing opportunity that could be your next big move.\n\n",
+  "🔍 Spotlight on Opportunity! A new challenge awaits for those looking to excel in their career.\n\n",
+  "💼 Collaborate with the Best! Be part of an exceptional team and take your career to new heights.\n\n",
+  "🌟 Help Build the Future! Join a forward-thinking organization making waves in its industry.\n\n",
+  "✨ Collaborate with the Best! Grow your career with an organization that’s committed to excellence.\n\n",
+  "🔍 Calling Problem-Solvers! Do you thrive on challenges and innovation? This role is tailor-made for you.\n\n",
+  "🚨 Don’t Miss This Opportunity! A fantastic role is open for talented professionals ready to make a change.\n\n",
+];
+
+export const linkedinJobTemplatesBottom = [
+  "\n\nGet the latest job updates and apply early with Onedotjob. Follow now and secure your next opportunity! \n\n👉 Join us for updates on X: {twitterLink} \n👉 Connect on Telegram: {telegramLink} \n👉 Connect on LinkedIn: {linkedinLink} \n👉 Follow here for more opportunities! \n\n#CareerGrowth #JobSearch #HiringNow #JoinTheTeam",
+
+  "\n\nStay ahead with fresh job updates from Onedotjob. Follow now and apply early for the best opportunities! \n\n➡️ Stay updated on X: {twitterLink} \n➡️ Chat with us on Telegram: {telegramLink} \n➡️ Connect on LinkedIn: {linkedinLink}\n➡️ Follow here for more updates! \n\n#JobAlert #InnovatorsWanted #CareerOpportunities",
+
+  "\n\n Get the latest openings and apply early with Onedotjob. Follow now and don’t miss out! \n\n🌐 Follow us on X: {twitterLink} \n🌐 Join us on Telegram: {telegramLink} \n🌐 Join us on LinkedIn: {linkedinLink} \n🌐 Follow for more opportunities! \n\n#DreamJob #ImpactfulCareers #WeAreHiring",
+
+  "\n\nBe the first to know about new jobs! Follow Onedotjob for the latest updates and apply early for your next career move. \n\n👉 Follow on X for updates: {twitterLink} \n👉 Join the conversation on Telegram: {telegramLink} \n👉 Join us on LinkedIn: {linkedinLink} \n👉 Follow for more roles here! \n\n#CareerGrowth #JobsNow #WorkWithUs",
+
+  "\n\nDream job alert! Onedotjob helps you get in first with the latest openings. Follow today and start your journey now! \n\n🔗 Follow us on X for news: {twitterLink} \n🔗 Join us on Telegram: {telegramLink}\n🔗 Join us on LinkedIn: {linkedinLink} \n🔗 Stay tuned here for updates! \n\n#HiringAlert #NewCareer #JobSearch",
+
+  "\n\nMake your next career move the right one. Follow Onedotjob for exclusive job updates and apply early to stay ahead! \n\n🚀 Stay updated via X: {twitterLink} \n🚀 Join us on Telegram: {telegramLink} \n🚀 Join us on LinkedIn: {linkedinLink} \n🚀 Follow here for more updates! \n\n#JobPosting #HiringNow #Teamwork",
+
+  "\n\nDon’t miss your chance to apply first! Follow Onedotjob for up-to-date job openings and take your career to the next level. \n\n👉 Follow us on X: {twitterLink} \n👉 Join the discussion on Telegram: {telegramLink} \n👉 Join us on LinkedIn: {linkedinLink} \n👉 Follow here for more updates and roles! \n\n#FutureCareers #DreamBig #NowHiring",
+
+  "\n\nBe the first to know about new jobs! Follow Onedotjob for the latest updates and apply early for your next career move. \n\n➡️ Stay in the loop on X: {twitterLink} \n➡️ Connect on Telegram: {telegramLink} \n➡️ Connect on LinkedIn: {linkedinLink} \n➡️ Follow here for more opportunities! \n\n#GrowingTeam #CareerOpportunities #WorkLife",
+
+  "\n\nGet the latest job updates and apply early with Onedotjob. Follow now and secure your next opportunity! \n\n🌟 Stay updated on X: {twitterLink} \n🌟 Join the conversation on Telegram: {telegramLink} \n➡️ Connect on LinkedIn: {linkedinLink} \n➡️ Follow here for more updates! \n\n#CareerGoals #JobOpenings #TechCareers",
+
+  "\n\nDream job alert! Onedotjob helps you get in first with the latest openings. Follow today and start your journey now! \n\n👉 Follow for updates on X: {twitterLink} \n👉 Join us on Telegram: {telegramLink} \n👉 Join us on LinkedIn: {linkedinLink} \n👉 Follow here for more amazing opportunities! \n\n#DreamJob #JobsNow #OpportunityKnocks",
+];

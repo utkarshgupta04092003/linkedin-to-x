@@ -1,6 +1,6 @@
 import { uploadToCloudinary } from "@/app/_lib/data-fetchers/cloudinary";
-import { generateShortURL, prisma } from "@/app/_lib/utils/globals";
-import { getFormattedJobForLinkedIn } from "@/app/_lib/utils/linkedin";
+import { prisma } from "@/app/_lib/utils/globals";
+import { getMultipleFormattedJob } from "@/app/_lib/utils/linkedin";
 import { getFormattedJob } from "@/app/_lib/utils/twitter";
 import { generateTwitterLikeImage } from "@/app/_lib/utils/twitterTextToImage";
 import { Jobs } from "@prisma/client";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { NextResponse } from "next/server";
 
 const ROUTE_ACCESS_KEY = process.env.LINKEDIN_ROUTE_ACCESS_KEY;
+const JOB_COUNT = 5;
 
 export async function GET(request: Request) {
   try {
@@ -19,32 +20,29 @@ export async function GET(request: Request) {
         { status: 401 }
       );
     }
-    const latestJobs = await getLatestJob();
-    if (!latestJobs) {
+    const latestJobs = await getLatestJob(JOB_COUNT);
+    if (!latestJobs || latestJobs.length === 0) {
       return NextResponse.json({ message: "No new jobs found", error: null });
     }
     const content = getFormattedJob(
-      latestJobs.company,
-      latestJobs.title,
-      latestJobs.location,
-      latestJobs.postedDate ?? ""
+      latestJobs[0].company,
+      latestJobs[0].title,
+      latestJobs[0].location,
+      latestJobs[0].postedDate ?? ""
     );
     const image = await generateTwitterLikeImage(content);
     const imagePath = await uploadToCloudinary(
       image,
       "automate-linkedin/linkedin-post",
-      `job-id-${latestJobs.id}`
+      `job-id-${latestJobs[0].id}`
     );
-    const shortURL = generateShortURL(latestJobs.id);
-    const imageDescription = getFormattedJobForLinkedIn(
-      latestJobs.company,
-      latestJobs.title,
-      shortURL
-    );
+    const imageDescription = getMultipleFormattedJob(latestJobs);
     const postId = await postToLinkedIn(imagePath, imageDescription);
-    await updateJob(latestJobs.id);
+    await updateJob(latestJobs);
     return NextResponse.json({
-      message: `Job ${latestJobs.id} posted successfully to linkedin: ${postId}`,
+      message: `Job ${latestJobs
+        .map((job) => job.id)
+        .join(", ")} posted successfully to linkedin: ${postId}`,
     });
   } catch (error) {
     return NextResponse.json(
@@ -54,24 +52,21 @@ export async function GET(request: Request) {
   }
 }
 
-const getLatestJob = async (): Promise<Jobs | null> => {
-  const latestJobs = await prisma.jobs.findFirst({
+const getLatestJob = async (count: number): Promise<Jobs[] | null> => {
+  const latestJobs = await prisma.jobs.findMany({
     where: {
       isLinkedInPosted: false,
     },
     orderBy: {
       postedDate: "desc",
     },
+    take: count,
   });
-  if (
-    !latestJobs ||
-    !latestJobs.company ||
-    !latestJobs.title ||
-    !latestJobs.jobLink
-  ) {
-    return null;
-  }
-  return latestJobs;
+  const jobs: Jobs[] = [];
+  latestJobs.forEach(
+    (job) => job.company && job.title && job.jobLink && jobs.push(job)
+  );
+  return jobs;
 };
 
 const postToLinkedIn = async (imagePath: string, imageDescription: string) => {
@@ -185,10 +180,13 @@ async function createLinkedInPost(asset: string, imageDescription: string) {
   return response.data;
 }
 
-const updateJob = async (jobId: Jobs["id"]) => {
-  await prisma.jobs.update({
+const updateJob = async (jobs: Jobs[]) => {
+  const jobIds = jobs.map((job) => job.id);
+  await prisma.jobs.updateMany({
     where: {
-      id: jobId,
+      id: {
+        in: jobIds,
+      },
     },
     data: {
       isLinkedInPosted: true,
