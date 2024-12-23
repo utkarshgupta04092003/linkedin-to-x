@@ -3,7 +3,7 @@ import * as cheerio from "cheerio"; // Ensure cheerio is installed
 import { HIRING_MESSAGE } from "../config/globals";
 import { LinkedinScrapeJob } from "../declarations/globals";
 
-export const extractData = async (data: string) => {
+export const extractData = async (data: string, keyword: string) => {
   const $ = cheerio.load(data);
   const jobs: LinkedinScrapeJob[] = [];
 
@@ -48,7 +48,7 @@ export const extractData = async (data: string) => {
         salary,
         companyPageURL,
         companyLogoURL,
-        keyword: null,
+        keyword: keyword[0].toUpperCase() + keyword.slice(1).toLowerCase(),
         scrapedAt: new Date().toISOString(),
       });
     }

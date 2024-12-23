@@ -11,7 +11,7 @@ export const scrapJobs = async (keyword: string, location: string) => {
     while (retries < MAX_RETRIES) {
       try {
         const { data } = await axios.get(generateURL(keyword, location, page));
-        const extractedData = await extractData(data);
+        const extractedData = await extractData(data, keyword);
         return filterData(extractedData);
       } catch (error: any) {
         retries++;
