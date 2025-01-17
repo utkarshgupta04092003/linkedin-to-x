@@ -64,3 +64,9 @@ model MetaData {
 
   createdAt DateTime @default(now())
 }
+
+model AnshuUsers {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  email String @unique
+}
