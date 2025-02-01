@@ -28,3 +28,21 @@ export const ERROR_MESSAGE_429 =
   "Error: Too many requests (429). Returning empty string.";
 
 export const HIRING_MESSAGE = "Actively hiring";
+
+export const locations = [
+  "Remote",
+  "United States",
+  "United Kingdom",
+  "India",
+  "Germany",
+];
+
+export const jobTypes = ["Full-time", "Part-time", "Contract", "Freelance"];
+
+export const experienceLevels = [
+  "Entry Level",
+  "Mid Level",
+  "Senior Level",
+  "Director",
+];
+export const salaryRanges = ["$0-$50k", "$50k-$100k", "$100k-$150k", "$150k+"];

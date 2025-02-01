@@ -11,3 +11,10 @@ export type LinkedinScrapeJob = Omit<
   | "isLinkedInPosted"
   | "isInstagramPosted"
 >;
+
+export type FilterState = {
+  location: string[];
+  jobType: string[];
+  experience: string[];
+  salary: string[];
+};
