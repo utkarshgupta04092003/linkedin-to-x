@@ -14,11 +14,13 @@ model Jobs {
   location             String
   jobLink              String
   postedDate           String?
-  hiringStatus         String? @default("Actively hiring")
+  hiringStatus         String?  @default("Actively hiring")
   salary               String?
   keyword              String?
   companyLogoURL       String?
   companyPageURL       String?
+  jobType              JobType?
+  workMode             WorkMode?
   isXPosted            Boolean  @default(false)
   isTelegramPosted     Boolean  @default(false)
   isLinkedInPosted     Boolean  @default(false)
@@ -38,11 +40,13 @@ model JobsTemp {
   location             String
   jobLink              String
   postedDate           String?
-  hiringStatus         String? @default("Actively hiring")
+  hiringStatus         String?  @default("Actively hiring")
   salary               String?
   keyword              String?
   companyLogoURL       String?
   companyPageURL       String?
+  jobType              JobType?
+  workMode             WorkMode?
   isXPosted            Boolean  @default(false)
   isTelegramPosted     Boolean  @default(false)
   isLinkedInPosted     Boolean  @default(false)
@@ -63,4 +67,16 @@ model MetaData {
   totalSimilarJobsUpdated Int
 
   createdAt DateTime @default(now())
+}
+
+enum JobType {
+  FullTime
+  PartTime
+  Internship
+}
+
+enum WorkMode {
+  Onsite
+  Remote
+  Hybrid
 }
