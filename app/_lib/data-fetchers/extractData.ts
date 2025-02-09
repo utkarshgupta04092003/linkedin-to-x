@@ -38,6 +38,8 @@ export const extractData = async (data: string, keyword: string) => {
                 companyLogoURL,
                 keyword: keyword[0].toUpperCase() + keyword.slice(1).toLowerCase(),
                 scrapedAt: new Date().toISOString(),
+                jobType: null,
+                workMode: null,
             })
         }
     }
@@ -112,6 +114,8 @@ export const extractSimilarJobsData = async (similarJobsData: any) => {
                     companyPageURL,
                     keyword: null,
                     scrapedAt: new Date().toISOString(),
+                    jobType: null,
+                    workMode: null,
                 })
             }
         }
