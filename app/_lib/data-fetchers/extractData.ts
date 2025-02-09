@@ -1,5 +1,5 @@
 import axios from "axios"
-import * as cheerio from "cheerio"; // Ensure cheerio is installed
+import * as cheerio from "cheerio"
 import { HIRING_MESSAGE } from "../config/globals"
 import { LinkedinScrapeJob } from "../declarations/globals"
 
