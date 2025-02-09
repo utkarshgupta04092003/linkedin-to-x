@@ -1,8 +1,9 @@
 "use client"
 
 import { Jobs } from "@prisma/client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useSWR from "swr"
+import { LOCATION } from "../_lib/config/globals"
 import { FilterState } from "../_lib/declarations/globals"
 import JobCard from "./components/JobCard"
 import Pagination from "./components/Pagination"
@@ -20,13 +21,15 @@ export default function JobListings() {
     const [currentPage, setCurrentPage] = useState(1)
     const [searchTerm, setSearchTerm] = useState("")
     const [filters, setFilters] = useState<FilterState>({
-        location: [],
+        [LOCATION]: [],
         jobType: [],
         experience: [],
         salary: [],
     })
     const { data } = useSWR<JobListingProps>(
-        `/api/v1/filter-jobs?query=${searchTerm.trim()}&page=${currentPage}&perPage=${ITEMS_PER_PAGE}`
+        `/api/v1/filter-jobs?query=${searchTerm.trim()}&page=${currentPage}&perPage=${ITEMS_PER_PAGE}&location=${
+            filters[LOCATION]
+        }`
     )
     const jobs = data?.data
     const totalJobs = data?.count
@@ -46,6 +49,9 @@ export default function JobListings() {
                 : [...prev[category], value],
         }))
     }
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [searchTerm])
     return (
         <div className="min-h-screen bg-background-secondary ">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

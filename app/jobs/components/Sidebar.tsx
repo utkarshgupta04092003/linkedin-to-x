@@ -1,4 +1,10 @@
-import { experienceLevels, jobTypes, locations, salaryRanges } from "@/app/_lib/config/globals"
+import {
+    experienceLevels,
+    jobTypes,
+    LOCATION,
+    LOCATION_LIST,
+    salaryRanges,
+} from "@/app/_lib/config/globals"
 import { FilterState } from "@/app/_lib/declarations/globals"
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline"
 import React from "react"
@@ -9,6 +15,7 @@ type SidebarProps = {
     filters: FilterState
     toggleFilter: (category: keyof FilterState, value: string) => void
 }
+
 export default function Sidebar({
     showFilters,
     setShowFilters,
@@ -16,7 +23,7 @@ export default function Sidebar({
     toggleFilter,
 }: SidebarProps) {
     const filtersGroup = [
-        { label: "Location", key: "location", values: locations },
+        { label: LOCATION, key: LOCATION, values: LOCATION_LIST },
         { label: "Job Type", key: "jobType", values: jobTypes },
         { label: "Experience Level", key: "experience", values: experienceLevels },
         { label: "Salary Range", key: "salary", values: salaryRanges },
@@ -50,7 +57,7 @@ export default function Sidebar({
                                         <label key={value} className="flex items-center">
                                             <input
                                                 type="checkbox"
-                                                className="rounded-md border-input/50 h-4 w-4 text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background transition-all"
+                                                className="rounded-md border-input/50 h-4 w-4 text-primary transition-all"
                                                 checked={filters[
                                                     currentFilter.key as keyof FilterState
                                                 ].includes(value)}
@@ -66,6 +73,15 @@ export default function Sidebar({
                                             </span>
                                         </label>
                                     ))}
+                                    {/* TODO: write a way to open searchbar for location */}
+                                    {currentFilter.key === LOCATION && (
+                                        <div
+                                            onClick={() => console.log(currentFilter)}
+                                            className="flex items-center text-sm text-blue-500 cursor-pointer select-none"
+                                        >
+                                            See more
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))}
