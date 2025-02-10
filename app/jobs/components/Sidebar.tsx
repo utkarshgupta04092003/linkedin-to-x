@@ -1,10 +1,4 @@
-import {
-    experienceLevels,
-    jobTypes,
-    LOCATION,
-    LOCATION_LIST,
-    salaryRanges,
-} from "@/app/_lib/config/globals"
+import { FILTER_GROUP, LOCATION_KEY } from "@/app/_lib/config/globals"
 import { FilterState } from "@/app/_lib/declarations/globals"
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline"
 import React from "react"
@@ -22,12 +16,6 @@ export default function Sidebar({
     filters,
     toggleFilter,
 }: SidebarProps) {
-    const filtersGroup = [
-        { label: LOCATION, key: LOCATION, values: LOCATION_LIST },
-        { label: "Job Type", key: "jobType", values: jobTypes },
-        { label: "Experience Level", key: "experience", values: experienceLevels },
-        { label: "Salary Range", key: "salary", values: salaryRanges },
-    ]
     return (
         <div className="md:w-72 flex-shrink-0">
             <div className="sticky top-24">
@@ -47,7 +35,7 @@ export default function Sidebar({
         animate-in slide-in-from-left-1/4 duration-300 md:animate-none`}
                 >
                     <div className="rounded-rounded-primary border border-gray-100 dark:border-none dark:bg-bg-secondary-dark backdrop-blur-sm p-6 space-y-8 shadow-sm">
-                        {filtersGroup.map((currentFilter) => (
+                        {FILTER_GROUP.map((currentFilter) => (
                             <div>
                                 <h3 className="font-semibold text-lg dark:text-background/80 mb-4 ">
                                     {currentFilter.label}
@@ -74,7 +62,7 @@ export default function Sidebar({
                                         </label>
                                     ))}
                                     {/* TODO: write a way to open searchbar for location */}
-                                    {currentFilter.key === LOCATION && (
+                                    {currentFilter.key === LOCATION_KEY && (
                                         <div
                                             onClick={() => console.log(currentFilter)}
                                             className="flex items-center text-sm text-blue-500 cursor-pointer select-none"

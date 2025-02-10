@@ -65,10 +65,22 @@ export default function JobCard({ job }: JobCardProps) {
                             </div>
                         )}
                     </div>
-                    <div className="mt-4">
-                        <span className="inline-flex items-center rounded-md bg-green-50 dark:bg-green-900/30 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400 ring-1 ring-inset ring-green-600/20 dark:ring-green-400/30">
-                            {job.hiringStatus}
-                        </span>
+                    <div className="flex items-center gap-2 mt-4">
+                        {job.hiringStatus && (
+                            <span className="inline-flex items-center rounded-md bg-green-50 dark:bg-green-900/30 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400 ring-1 ring-inset ring-green-600/20 dark:ring-green-400/30">
+                                {job.hiringStatus}
+                            </span>
+                        )}
+                        {job.jobType && (
+                            <span className="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-400 ring-1 ring-inset ring-blue-700/10 dark:ring-blue-400/30">
+                                {job.jobType}
+                            </span>
+                        )}
+                        {job.workMode && (
+                            <span className="inline-flex items-center rounded-md bg-sky-50 dark:bg-sky-900/30 px-2 py-1 text-xs font-medium text-sky-700 dark:text-sky-400 ring-1 ring-inset ring-sky-700/10 dark:ring-sky-400/30">
+                                {job.workMode}
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>

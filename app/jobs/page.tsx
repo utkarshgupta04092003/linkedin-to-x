@@ -3,7 +3,7 @@
 import { Jobs } from "@prisma/client"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
-import { LOCATION } from "../_lib/config/globals"
+import { JOBS_PER_PAGE, JOB_TYPE_KEY, LOCATION_KEY, WORK_MODE_KEY } from "../_lib/config/globals"
 import { FilterState } from "../_lib/declarations/globals"
 import JobCard from "./components/JobCard"
 import Pagination from "./components/Pagination"
@@ -14,33 +14,38 @@ type JobListingProps = {
     data: Jobs[]
     count: number
 }
-const ITEMS_PER_PAGE = 10
 
 export default function JobListings() {
     const [showFilters, setShowFilters] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [searchTerm, setSearchTerm] = useState("")
     const [filters, setFilters] = useState<FilterState>({
-        [LOCATION]: [],
-        jobType: [],
+        [LOCATION_KEY]: [],
+        [JOB_TYPE_KEY]: [],
+        [WORK_MODE_KEY]: [],
         experience: [],
         salary: [],
     })
-    const { data } = useSWR<JobListingProps>(
-        `/api/v1/filter-jobs?query=${searchTerm.trim()}&page=${currentPage}&perPage=${ITEMS_PER_PAGE}&location=${
-            filters[LOCATION]
-        }`
-    )
+    const url = `/api/v1/filter-jobs?${new URLSearchParams({
+        query: searchTerm.trim(),
+        page: currentPage.toString(),
+        location: filters[LOCATION_KEY].join(","),
+        jobType: filters[JOB_TYPE_KEY].join(","),
+        workMode: filters[WORK_MODE_KEY].join(","),
+        experience: filters.experience.join(","),
+        salary: filters.salary.join(","),
+    })}`
+    const { data } = useSWR<JobListingProps>(url)
     const jobs = data?.data
     const totalJobs = data?.count
     const resultIndex =
         currentPage === 1
-            ? `1-${Math.min(ITEMS_PER_PAGE, jobs!?.length)}`
-            : `${(currentPage - 1) * ITEMS_PER_PAGE + 1} - ${Math.min(
-                  ITEMS_PER_PAGE * currentPage,
+            ? `1-${Math.min(JOBS_PER_PAGE, jobs!?.length)}`
+            : `${(currentPage - 1) * JOBS_PER_PAGE + 1} - ${Math.min(
+                  JOBS_PER_PAGE * currentPage,
                   totalJobs!
               )}`
-    const totalPages = Math.ceil((data?.count ?? 1) / ITEMS_PER_PAGE)
+    const totalPages = Math.ceil((data?.count ?? 1) / JOBS_PER_PAGE)
     const toggleFilter = (category: keyof FilterState, value: string) => {
         setFilters((prev) => ({
             ...prev,

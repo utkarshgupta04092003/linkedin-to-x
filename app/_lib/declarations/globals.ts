@@ -1,5 +1,5 @@
 import { Jobs } from "@prisma/client"
-import { LOCATION } from "../config/globals"
+import { JOB_TYPE_KEY, LOCATION_KEY, WORK_MODE_KEY } from "../config/globals"
 
 export type LinkedinScrapeJob = Omit<
     Jobs,
@@ -14,8 +14,9 @@ export type LinkedinScrapeJob = Omit<
 >
 
 export type FilterState = {
-    [LOCATION]: string[]
-    jobType: string[]
+    [LOCATION_KEY]: string[]
+    [JOB_TYPE_KEY]: string[]
+    [WORK_MODE_KEY]: string[]
     experience: string[]
     salary: string[]
 }

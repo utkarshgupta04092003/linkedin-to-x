@@ -1,3 +1,4 @@
+import { JOBS_PER_PAGE } from "@/app/_lib/config/globals"
 import { prisma } from "@/app/_lib/utils/globals"
 import { NextResponse } from "next/server"
 
@@ -5,17 +6,21 @@ export async function GET(req: Request) {
     const url = new URL(req.url)
     const query = url.searchParams.get("query") || ""
     const page = url.searchParams.get("page") || "1"
-    const perPage = url.searchParams.get("perPage") || "10"
+    const perPage = JOBS_PER_PAGE
     const startPostedDate = url.searchParams.get("startPostedDate")
     const endPostedDate = url.searchParams.get("endPostedDate")
     const location = url.searchParams.get("location")
+    const jobType = url.searchParams.get("jobType")
+    const workMode = url.searchParams.get("workMode")
     const jobs = await getJobs(
         query,
         Number(page),
         Number(perPage),
         startPostedDate,
         endPostedDate,
-        location ? location?.split(",") : null
+        location ? location?.split(",") : null,
+        jobType ? jobType?.split(",") : null,
+        workMode ? workMode?.split(",") : null
     )
     return NextResponse.json(jobs, { status: 200 })
 }
@@ -26,7 +31,9 @@ async function getJobs(
     perPage: number,
     startPostedDate: string | null,
     endPostedDate: string | null,
-    location?: string[] | null
+    location: string[] | null,
+    jobType: string[] | null,
+    workMode: string[] | null
 ) {
     const where: any = {}
     if (query) {
@@ -57,6 +64,22 @@ async function getJobs(
                     mode: "insensitive",
                 },
             })),
+        })
+    }
+    if (jobType && jobType.length > 0) {
+        where.AND = where.AND || []
+        where.AND.push({
+            jobType: {
+                in: jobType,
+            },
+        })
+    }
+    if (workMode && workMode.length > 0) {
+        where.AND = where.AND || []
+        where.AND.push({
+            workMode: {
+                in: workMode,
+            },
         })
     }
     const data = await prisma.jobs.findMany({
