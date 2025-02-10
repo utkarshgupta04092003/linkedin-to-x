@@ -3,7 +3,13 @@
 import { Jobs } from "@prisma/client"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
-import { JOBS_PER_PAGE, JOB_TYPE_KEY, LOCATION_KEY, WORK_MODE_KEY } from "../_lib/config/globals"
+import {
+    JOBS_PER_PAGE,
+    JOB_TYPE_KEY,
+    LOCATION_KEY,
+    POSTED_DATE_RANGE_KEY,
+    WORK_MODE_KEY,
+} from "../_lib/config/globals"
 import { FilterState } from "../_lib/declarations/globals"
 import JobCard from "./components/JobCard"
 import Pagination from "./components/Pagination"
@@ -23,6 +29,10 @@ export default function JobListings() {
         [LOCATION_KEY]: [],
         [JOB_TYPE_KEY]: [],
         [WORK_MODE_KEY]: [],
+        [POSTED_DATE_RANGE_KEY]: {
+            startDate: null,
+            endDate: null,
+        },
         experience: [],
         salary: [],
     })
@@ -34,6 +44,8 @@ export default function JobListings() {
         workMode: filters[WORK_MODE_KEY].join(","),
         experience: filters.experience.join(","),
         salary: filters.salary.join(","),
+        startPostedDate: filters.dateRange.startDate?.toString() || "",
+        endPostedDate: filters.dateRange.endDate?.toString() || "",
     })}`
     const { data } = useSWR<JobListingProps>(url)
     const jobs = data?.data
@@ -46,17 +58,25 @@ export default function JobListings() {
                   totalJobs!
               )}`
     const totalPages = Math.ceil((data?.count ?? 1) / JOBS_PER_PAGE)
-    const toggleFilter = (category: keyof FilterState, value: string) => {
+    const toggleFilter = (
+        category: keyof FilterState,
+        value: string,
+        subCategory?: "startDate" | "endDate"
+    ) => {
         setFilters((prev) => ({
             ...prev,
-            [category]: prev[category].includes(value)
-                ? prev[category].filter((item) => item !== value)
-                : [...prev[category], value],
+            [category]:
+                category === POSTED_DATE_RANGE_KEY
+                    ? { ...prev[category], [subCategory!]: value }
+                    : prev[category].includes(value)
+                    ? prev[category].filter((item) => item !== value)
+                    : [...prev[category], value],
         }))
     }
     useEffect(() => {
         setCurrentPage(1)
-    }, [searchTerm])
+    }, [filters])
+
     return (
         <div className="min-h-screen bg-background-secondary ">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

@@ -16,8 +16,8 @@ export async function GET(req: Request) {
         query,
         Number(page),
         Number(perPage),
-        startPostedDate,
-        endPostedDate,
+        startPostedDate?.trim() !== "" ? startPostedDate : null,
+        endPostedDate?.trim() !== "" ? endPostedDate : null,
         location ? location?.split(",") : null,
         jobType ? jobType?.split(",") : null,
         workMode ? workMode?.split(",") : null

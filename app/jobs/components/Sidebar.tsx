@@ -1,4 +1,4 @@
-import { FILTER_GROUP, LOCATION_KEY } from "@/app/_lib/config/globals"
+import { FILTER_GROUP, LOCATION_KEY, POSTED_DATE_RANGE_KEY } from "@/app/_lib/config/globals"
 import { FilterState } from "@/app/_lib/declarations/globals"
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline"
 import React from "react"
@@ -7,7 +7,11 @@ type SidebarProps = {
     showFilters: boolean
     setShowFilters: React.Dispatch<React.SetStateAction<boolean>>
     filters: FilterState
-    toggleFilter: (category: keyof FilterState, value: string) => void
+    toggleFilter: (
+        category: keyof FilterState,
+        value: string,
+        subCategory?: "startDate" | "endDate"
+    ) => void
 }
 
 export default function Sidebar({
@@ -35,44 +39,93 @@ export default function Sidebar({
         animate-in slide-in-from-left-1/4 duration-300 md:animate-none`}
                 >
                     <div className="rounded-rounded-primary border border-gray-100 dark:border-none dark:bg-bg-secondary-dark backdrop-blur-sm p-6 space-y-8 shadow-sm">
-                        {FILTER_GROUP.map((currentFilter) => (
-                            <div>
-                                <h3 className="font-semibold text-lg dark:text-background/80 mb-4 ">
-                                    {currentFilter.label}
-                                </h3>
+                        <div>
+                            <h3 className="font-semibold text-foreground/90 mb-4 text-base">
+                                Date Posted
+                            </h3>
+                            <div className="space-y-4">
                                 <div className="space-y-2">
-                                    {currentFilter.values.map((value) => (
-                                        <label key={value} className="flex items-center">
-                                            <input
-                                                type="checkbox"
-                                                className="rounded-md border-input/50 h-4 w-4 text-primary transition-all"
-                                                checked={filters[
-                                                    currentFilter.key as keyof FilterState
-                                                ].includes(value)}
-                                                onChange={() =>
-                                                    toggleFilter(
-                                                        currentFilter.key as keyof FilterState,
-                                                        value
-                                                    )
-                                                }
-                                            />
-                                            <span className="ml-2 text-base text-text-secondary-light dark:text-text-secondary-dark cursor-pointer select-none">
-                                                {value}
-                                            </span>
-                                        </label>
-                                    ))}
-                                    {/* TODO: write a way to open searchbar for location */}
-                                    {currentFilter.key === LOCATION_KEY && (
-                                        <div
-                                            onClick={() => console.log(currentFilter)}
-                                            className="flex items-center text-sm text-blue-500 cursor-pointer select-none"
-                                        >
-                                            See more
-                                        </div>
-                                    )}
+                                    <label className="block text-sm text-muted-foreground">
+                                        From
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={filters.dateRange.startDate || ""}
+                                        onChange={(e) =>
+                                            toggleFilter(
+                                                POSTED_DATE_RANGE_KEY,
+                                                e.target.value,
+                                                "startDate"
+                                            )
+                                        }
+                                        max={filters.dateRange.endDate || undefined}
+                                        className="w-full rounded-md border-input/50 bg-background px-3 py-2 text-sm text-foreground shadow-sm focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background transition-all hover:bg-accent/50"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="block text-sm text-muted-foreground">
+                                        To
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={filters.dateRange.endDate || ""}
+                                        onChange={(e) =>
+                                            toggleFilter(
+                                                POSTED_DATE_RANGE_KEY,
+                                                e.target.value,
+                                                "endDate"
+                                            )
+                                        }
+                                        min={filters.dateRange.startDate || undefined}
+                                        className="w-full rounded-md border-input/50 bg-background px-3 py-2 text-sm text-foreground shadow-sm focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background transition-all hover:bg-accent/50"
+                                    />
                                 </div>
                             </div>
-                        ))}
+                        </div>
+                        {FILTER_GROUP.map((currentFilter) => {
+                            const filterValue = filters[currentFilter.key as keyof FilterState]
+
+                            return (
+                                <div key={currentFilter.key}>
+                                    <h3 className="font-semibold text-lg dark:text-background/80 mb-4 ">
+                                        {currentFilter.label}
+                                    </h3>
+                                    <div className="space-y-2">
+                                        {currentFilter.values.map((value) => (
+                                            <label key={value} className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    className="rounded-md border-input/50 h-4 w-4 text-primary transition-all"
+                                                    checked={
+                                                        Array.isArray(filterValue)
+                                                            ? filterValue.includes(value)
+                                                            : false
+                                                    }
+                                                    onChange={() =>
+                                                        toggleFilter(
+                                                            currentFilter.key as keyof FilterState,
+                                                            value
+                                                        )
+                                                    }
+                                                />
+                                                <span className="ml-2 text-base text-text-secondary-light dark:text-text-secondary-dark cursor-pointer select-none">
+                                                    {value}
+                                                </span>
+                                            </label>
+                                        ))}
+                                        {/* TODO: write a way to open searchbar for location */}
+                                        {currentFilter.key === LOCATION_KEY && (
+                                            <div
+                                                onClick={() => console.log(currentFilter)}
+                                                className="flex items-center text-sm text-blue-500 cursor-pointer select-none"
+                                            >
+                                                See more
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

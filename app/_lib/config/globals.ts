@@ -32,6 +32,7 @@ export const salaryRanges = ["$0-$50k", "$50k-$100k", "$100k-$150k", "$150k+"]
 export const LOCATION_KEY = "location"
 export const JOB_TYPE_KEY = "jobType"
 export const WORK_MODE_KEY = "workMode"
+export const POSTED_DATE_RANGE_KEY = "dateRange"
 
 export const FILTER_GROUP = [
     {
