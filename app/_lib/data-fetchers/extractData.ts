@@ -40,6 +40,7 @@ export const extractData = async (data: string, keyword: string) => {
                 scrapedAt: new Date().toISOString(),
                 jobType: null,
                 workMode: null,
+                experienceLevel: null,
             })
         }
     }
@@ -116,6 +117,7 @@ export const extractSimilarJobsData = async (similarJobsData: any) => {
                     scrapedAt: new Date().toISOString(),
                     jobType: null,
                     workMode: null,
+                    experienceLevel: null,
                 })
             }
         }

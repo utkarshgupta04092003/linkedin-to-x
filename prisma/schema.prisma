@@ -21,6 +21,7 @@ model Jobs {
   companyPageURL       String?
   jobType              JobType?
   workMode             WorkMode?
+  experienceLevel      ExperienceLevel?
   isXPosted            Boolean  @default(false)
   isTelegramPosted     Boolean  @default(false)
   isLinkedInPosted     Boolean  @default(false)
@@ -47,6 +48,7 @@ model JobsTemp {
   companyPageURL       String?
   jobType              JobType?
   workMode             WorkMode?
+  experienceLevel      ExperienceLevel?
   isXPosted            Boolean  @default(false)
   isTelegramPosted     Boolean  @default(false)
   isLinkedInPosted     Boolean  @default(false)
@@ -79,4 +81,12 @@ enum WorkMode {
   Onsite
   Remote
   Hybrid
+}
+
+enum ExperienceLevel {
+  Internship
+  EntryLevel
+  Director
+  Associate
+  SeniorLevel
 }
