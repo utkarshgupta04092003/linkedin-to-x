@@ -12,6 +12,7 @@ export async function GET(req: Request) {
     const location = url.searchParams.get("location")
     const jobType = url.searchParams.get("jobType")
     const workMode = url.searchParams.get("workMode")
+    const experience = url.searchParams.get("experience")
     const jobs = await getJobs(
         query,
         Number(page),
@@ -20,7 +21,8 @@ export async function GET(req: Request) {
         endPostedDate?.trim() !== "" ? endPostedDate : null,
         location ? location?.split(",") : null,
         jobType ? jobType?.split(",") : null,
-        workMode ? workMode?.split(",") : null
+        workMode ? workMode?.split(",") : null,
+        experience ? experience?.split(",") : null
     )
     return NextResponse.json(jobs, { status: 200 })
 }
@@ -33,7 +35,8 @@ async function getJobs(
     endPostedDate: string | null,
     location: string[] | null,
     jobType: string[] | null,
-    workMode: string[] | null
+    workMode: string[] | null,
+    experience: string[] | null
 ) {
     const where: any = {}
     if (query) {
@@ -82,13 +85,26 @@ async function getJobs(
             },
         })
     }
+    if (experience && experience.length > 0) {
+        where.AND = where.AND || []
+        where.AND.push({
+            experienceLevel: {
+                in: experience,
+            },
+        })
+    }
     const data = await prisma.jobs.findMany({
         where,
         take: perPage,
         skip: perPage * (page - 1),
-        orderBy: {
-            postedDate: "desc",
-        },
+        orderBy: [
+            {
+                postedDate: "desc",
+            },
+            {
+                scrapedAt: "desc",
+            },
+        ],
     })
     const count = await prisma.jobs.count({
         where,

@@ -4,6 +4,7 @@ import { Jobs } from "@prisma/client"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 import {
+    EXPERIENCE_LEVEL_KEY,
     JOBS_PER_PAGE,
     JOB_TYPE_KEY,
     LOCATION_KEY,
@@ -33,8 +34,7 @@ export default function JobListings() {
             startDate: null,
             endDate: null,
         },
-        experience: [],
-        salary: [],
+        [EXPERIENCE_LEVEL_KEY]: [],
     })
     const url = `/api/v1/filter-jobs?${new URLSearchParams({
         query: searchTerm.trim(),
@@ -43,7 +43,6 @@ export default function JobListings() {
         jobType: filters[JOB_TYPE_KEY].join(","),
         workMode: filters[WORK_MODE_KEY].join(","),
         experience: filters.experience.join(","),
-        salary: filters.salary.join(","),
         startPostedDate: filters.dateRange.startDate?.toString() || "",
         endPostedDate: filters.dateRange.endDate?.toString() || "",
     })}`

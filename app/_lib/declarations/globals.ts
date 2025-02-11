@@ -1,5 +1,11 @@
 import { Jobs } from "@prisma/client"
-import { JOB_TYPE_KEY, LOCATION_KEY, POSTED_DATE_RANGE_KEY, WORK_MODE_KEY } from "../config/globals"
+import {
+    EXPERIENCE_LEVEL_KEY,
+    JOB_TYPE_KEY,
+    LOCATION_KEY,
+    POSTED_DATE_RANGE_KEY,
+    WORK_MODE_KEY,
+} from "../config/globals"
 
 export type LinkedinScrapeJob = Omit<
     Jobs,
@@ -21,6 +27,5 @@ export type FilterState = {
         startDate: string | null
         endDate: string | null
     }
-    experience: string[]
-    salary: string[]
+    [EXPERIENCE_LEVEL_KEY]: string[]
 }

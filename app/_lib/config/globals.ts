@@ -1,4 +1,4 @@
-import { JobType, WorkMode } from "@prisma/client"
+import { ExperienceLevel, JobType, WorkMode } from "@prisma/client"
 
 export const BASE_URL = "https://latest-linkedin-jobs-utkarshgupta04092003s-projects.vercel.app"
 
@@ -25,14 +25,11 @@ export const HIRING_MESSAGE = "Actively hiring"
 
 export const JOBS_PER_PAGE = 10
 
-// TODO: Fix & Update these filters
-export const experienceLevels = ["Entry Level", "Mid Level", "Senior Level", "Director"]
-export const salaryRanges = ["$0-$50k", "$50k-$100k", "$100k-$150k", "$150k+"]
-
 export const LOCATION_KEY = "location"
 export const JOB_TYPE_KEY = "jobType"
 export const WORK_MODE_KEY = "workMode"
 export const POSTED_DATE_RANGE_KEY = "dateRange"
+export const EXPERIENCE_LEVEL_KEY = "experience"
 
 export const FILTER_GROUP = [
     {
@@ -42,6 +39,5 @@ export const FILTER_GROUP = [
     },
     { label: "Job Type", key: JOB_TYPE_KEY, values: Object.keys(JobType) },
     { label: "Work Mode", key: WORK_MODE_KEY, values: Object.keys(WorkMode) },
-    { label: "Experience Level", key: "experience", values: experienceLevels },
-    { label: "Salary Range", key: "salary", values: salaryRanges },
+    { label: "Experience Level", key: EXPERIENCE_LEVEL_KEY, values: Object.keys(ExperienceLevel) },
 ]
