@@ -9,7 +9,13 @@ export async function GET() {
     const keyword = ANGULAR
     const location = INDIA
     const startTime = new Date().getTime()
-    const updatedJobs = await scrapJobs(keyword, location)
+    const updatedJobs = await scrapJobs({
+        keyword,
+        location,
+        jobType: null,
+        workMode: null,
+        experienceLevel: null,
+    })
     const endTime = new Date().getTime()
     return NextResponse.json(formatResponseMessage(updatedJobs.length, endTime - startTime), {
         status: 200,
