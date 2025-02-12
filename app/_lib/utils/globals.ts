@@ -2,14 +2,34 @@ import { PrismaClient } from "@prisma/client"
 import moment from "moment"
 import { ALLOWED_TIME_DIFF } from "../config/globals"
 import { TWITTER_HASHTAGS } from "../config/twitter"
-import { LinkedinScrapeJob } from "../declarations/globals"
+import { GenerateURLParameters, LinkedinScrapeJob } from "../declarations/globals"
 
 export const prisma = new PrismaClient()
 
-export const generateURL = (keyword: string, location: string, currentPage: number) => {
-    return `https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${keyword}&location=${location}&page=${currentPage}&position=1&pageNum=0&start=${
-        currentPage * 10
-    }&sortBy=DD`
+export const generateURL = ({
+    keyword,
+    location,
+    currentPage,
+    jobType,
+    workMode,
+    experienceLevel,
+}: GenerateURLParameters): string => {
+    let params = new URLSearchParams()
+    params.append("keywords", keyword)
+    params.append("location", location)
+    params.append("page", currentPage.toString())
+    params.append("position", "1")
+    params.append("pageNum", "0")
+    params.append("start", (currentPage * 10).toString())
+    params.append("sortBy", "DD")
+    if (jobType) params.append("f_JT", jobType)
+    if (workMode) params.append("f_WT", workMode)
+    if (experienceLevel) params.append("f_E", experienceLevel)
+
+    console.log(
+        `https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?${params.toString()}`
+    )
+    return `https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?${params.toString()}`
 }
 
 export const filterData = (data: LinkedinScrapeJob[]) => {

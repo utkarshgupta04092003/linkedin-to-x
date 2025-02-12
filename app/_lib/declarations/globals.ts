@@ -1,4 +1,4 @@
-import { Jobs } from "@prisma/client"
+import { ExperienceLevel, Jobs, JobType, WorkMode } from "@prisma/client"
 import {
     EXPERIENCE_LEVEL_KEY,
     JOB_TYPE_KEY,
@@ -28,4 +28,21 @@ export type FilterState = {
         endDate: string | null
     }
     [EXPERIENCE_LEVEL_KEY]: string[]
+}
+
+export type ScrapJobsParameters = {
+    keyword: string
+    location: string
+    jobType: JobType | null
+    workMode: WorkMode | null
+    experienceLevel: ExperienceLevel | null
+}
+
+export type GenerateURLParameters = {
+    keyword: string
+    location: string
+    currentPage: number
+    jobType: string | null
+    workMode: string | null
+    experienceLevel: string | null
 }
