@@ -1,0 +1,20 @@
+# Check tsconfig standards
+echo 'Checking TypeScript standards...'
+npm run check-types ||
+(
+    echo '❌ TypeScript check failed.';
+    false;
+)
+echo '✅ TypeScript standards check completed.'
+
+# Creating build
+echo 'Creating build...'
+npm run build ||
+(
+    echo '❌ Build failed.';
+    false;
+)
+echo '✅ Build creation completed.'
+
+# If everything passes... Now we can commit
+echo '✅ All checks passed, now committing...'
