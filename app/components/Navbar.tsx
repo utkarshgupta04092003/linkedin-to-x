@@ -1,5 +1,6 @@
 "use client"
 
+import { SignedIn, SignedOut, SignInButton, UserButton, useSession } from "@clerk/nextjs"
 import { MoonIcon, SunIcon, UserCircleIcon } from "@heroicons/react/24/outline"
 import { useTheme } from "next-themes"
 import Link from "next/link"
@@ -8,6 +9,7 @@ import { useState } from "react"
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const { theme, setTheme } = useTheme()
+    const { isLoaded } = useSession()
     return (
         <nav className="sticky top-0 z-50 bg-white dark:bg-bg-primary-dark border-b border-gray-200 dark:border-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,10 +53,21 @@ export default function Navbar() {
                                 onClick={() => setIsOpen(!isOpen)}
                                 className="flex items-center"
                             >
-                                <UserCircleIcon className="h-8 w-8 text-gray-700 dark:text-gray-200" />
+                                {isLoaded ? (
+                                    <>
+                                        <SignedOut>
+                                            <SignInButton />
+                                        </SignedOut>
+                                        <SignedIn>
+                                            <UserButton />
+                                        </SignedIn>
+                                    </>
+                                ) : (
+                                    <UserCircleIcon className="h-8 w-8 text-gray-700 dark:text-gray-200" />
+                                )}
                             </button>
                             {/* Dropdown Menu */}
-                            {isOpen && (
+                            {false && (
                                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-bg-primary-dark border border-gray-200 dark:border-gray-700">
                                     <div className="py-1">
                                         {dropdownUrls.map((link) => (

@@ -11,6 +11,8 @@
         "check-types": "tsc --noEmit"
     },
     "dependencies": {
+        "@clerk/nextjs": "^6.12.0",
+        "@clerk/themes": "^2.2.19",
         "@heroicons/react": "^2.2.0",
         "@prisma/client": "^5.22.0",
         "axios": "^1.7.7",

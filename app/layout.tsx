@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
 import type React from "react"
+import ClerkThemeProvider from "./_lib/context-providers/ClerkThemeProvider"
 import SWRConfigProvider from "./_lib/context-providers/SWRConfigProvider"
 import Navbar from "./components/Navbar"
 import "./globals.css"
@@ -15,10 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en" suppressHydrationWarning>
             <body>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                    <SWRConfigProvider>
-                        <Navbar />
-                        {children}
-                    </SWRConfigProvider>
+                    <ClerkThemeProvider>
+                        <SWRConfigProvider>
+                            <Navbar />
+                            {children}
+                        </SWRConfigProvider>
+                    </ClerkThemeProvider>
                 </ThemeProvider>
             </body>
         </html>
