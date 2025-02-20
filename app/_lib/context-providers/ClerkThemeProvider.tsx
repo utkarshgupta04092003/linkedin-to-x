@@ -2,7 +2,7 @@
 
 import { ClerkProvider } from "@clerk/nextjs"
 import { dark, neobrutalism } from "@clerk/themes"
-import { useTheme, UseThemeProps } from "next-themes"
+import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 
 export default function ClerkThemeProvider({ children }: { children: React.ReactNode }) {
@@ -15,5 +15,13 @@ export default function ClerkThemeProvider({ children }: { children: React.React
             setClerkTheme(neobrutalism)
         }
     }, [theme])
-    return <ClerkProvider appearance={{ baseTheme: clerkTheme }}>{children}</ClerkProvider>
+    console.log("env", process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
+    return (
+        <ClerkProvider
+            appearance={{ baseTheme: clerkTheme }}
+            publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+        >
+            {children}
+        </ClerkProvider>
+    )
 }
