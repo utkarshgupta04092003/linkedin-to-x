@@ -15,13 +15,5 @@ export default function ClerkThemeProvider({ children }: { children: React.React
             setClerkTheme(neobrutalism)
         }
     }, [theme])
-    console.log("env", process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
-    return (
-        <ClerkProvider
-            appearance={{ baseTheme: clerkTheme }}
-            publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-        >
-            {children}
-        </ClerkProvider>
-    )
+    return <ClerkProvider appearance={{ baseTheme: clerkTheme }}>{children}</ClerkProvider>
 }

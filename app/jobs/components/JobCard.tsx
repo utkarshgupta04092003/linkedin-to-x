@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline"
 import { Jobs } from "@prisma/client"
 import Image from "next/image"
+import Link from "next/link"
 
 interface JobCardProps {
     job: Jobs
@@ -26,8 +27,14 @@ export default function JobCard({ job }: JobCardProps) {
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4">
                         <div>
-                            <h2 className="text-lg font-semibold  text-text-primary-light dark:text-text-primary-dark">
-                                {job.title}
+                            <h2 className="text-lg font-semibold text-text-primary-light dark:text-text-primary-dark">
+                                <Link
+                                    href={`/shortly/${job.id}`}
+                                    className="hover:text-blue-500 transition-colors"
+                                    target="_blank"
+                                >
+                                    {job.title}
+                                </Link>
                             </h2>
                             <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
                                 {job.company}
