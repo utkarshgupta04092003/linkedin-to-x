@@ -8,18 +8,21 @@ datasource db {
 }
 
 model User {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  clerkUserId     String   @unique
-  firstName       String
-  lastName        String
-  username        String?
-  email           String   @unique
-  emailVerified   Boolean  @default(false)
-  imageUrl        String?
-  profileImageUrl String?
-  userType        UserType
-  createdAt       DateTime
-  updatedAt       DateTime
+  id                  String      @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId         String      @unique
+  firstName           String
+  lastName            String
+  username            String?
+  email               String      @unique
+  emailVerified       Boolean     @default(false)
+  imageUrl            String?
+  profileImageUrl     String?
+  userType            UserType
+  subscriptionEndDate DateTime?
+  createdAt           DateTime
+  updatedAt           DateTime
+  SavedJobs           SavedJobs[]
+  TrackJobs           TrackJobs[]
 }
 
 model Jobs {
@@ -47,6 +50,31 @@ model Jobs {
   updatedAt            DateTime         @updatedAt
 
   @@unique([title, company, location], name: "JobUniqueIndex")
+}
+
+model SavedJobs {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String   @db.ObjectId
+  jobId   String   @db.ObjectId
+  savedAt DateTime @default(now())
+  notes   String?
+  tags    String[] @default([])
+  user    User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, jobId])
+}
+
+model TrackJobs {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String         @db.ObjectId
+  jobId     String         @db.ObjectId
+  appliedAt DateTime       @default(now())
+  jobStatus TrackJobStatus
+  notes     String?
+  tags      String[]       @default([])
+  user      User           @relation(fields: [userId], references: [id])
+
+  @@unique([userId, jobId])
 }
 
 model JobsTemp {
@@ -109,4 +137,13 @@ enum ExperienceLevel {
   Director
   Associate
   SeniorLevel
+}
+
+enum TrackJobStatus {
+  Applied
+  Interviewing
+  OfferReceived
+  Rejected
+  Archived
+  NoResponse
 }
