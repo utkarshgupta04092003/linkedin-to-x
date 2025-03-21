@@ -53,28 +53,28 @@ model Jobs {
 }
 
 model SavedJobs {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId  String   @db.ObjectId
-  jobId   String   @db.ObjectId
-  savedAt DateTime @default(now())
-  notes   String?
-  tags    String[] @default([])
-  user    User     @relation(fields: [userId], references: [id])
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId String
+  jobId       String   @db.ObjectId
+  savedAt     DateTime @default(now())
+  notes       String?
+  tags        String[] @default([])
+  user        User     @relation(fields: [clerkUserId], references: [clerkUserId])
 
-  @@unique([userId, jobId])
+  @@unique([clerkUserId, jobId])
 }
 
 model TrackJobs {
-  id        String         @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String         @db.ObjectId
-  jobId     String         @db.ObjectId
-  appliedAt DateTime       @default(now())
-  jobStatus TrackJobStatus
-  notes     String?
-  tags      String[]       @default([])
-  user      User           @relation(fields: [userId], references: [id])
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId String
+  jobId       String         @db.ObjectId
+  appliedAt   DateTime       @default(now())
+  jobStatus   TrackJobStatus
+  notes       String?
+  tags        String[]       @default([])
+  user        User           @relation(fields: [clerkUserId], references: [clerkUserId])
 
-  @@unique([userId, jobId])
+  @@unique([clerkUserId, jobId])
 }
 
 model JobsTemp {
