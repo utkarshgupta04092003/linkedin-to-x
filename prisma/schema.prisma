@@ -7,14 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId     String   @unique
+  firstName       String
+  lastName        String
+  username        String?
+  email           String   @unique
+  emailVerified   Boolean  @default(false)
+  imageUrl        String?
+  profileImageUrl String?
+  userType        UserType
+  createdAt       DateTime
+  updatedAt       DateTime
+}
+
 model Jobs {
-  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                   String           @id @default(auto()) @map("_id") @db.ObjectId
   title                String
   company              String
   location             String
   jobLink              String
   postedDate           String?
-  hiringStatus         String?  @default("Actively hiring")
+  hiringStatus         String?          @default("Actively hiring")
   salary               String?
   keyword              String?
   companyLogoURL       String?
@@ -22,26 +37,26 @@ model Jobs {
   jobType              JobType?
   workMode             WorkMode?
   experienceLevel      ExperienceLevel?
-  isXPosted            Boolean  @default(false)
-  isTelegramPosted     Boolean  @default(false)
-  isLinkedInPosted     Boolean  @default(false)
-  isInstagramPosted    Boolean  @default(false)
-  isSimilarJobsUpdated Boolean  @default(false)
-  visitCount           Int      @default(0)
+  isXPosted            Boolean          @default(false)
+  isTelegramPosted     Boolean          @default(false)
+  isLinkedInPosted     Boolean          @default(false)
+  isInstagramPosted    Boolean          @default(false)
+  isSimilarJobsUpdated Boolean          @default(false)
+  visitCount           Int              @default(0)
   scrapedAt            String
-  updatedAt            DateTime @updatedAt
+  updatedAt            DateTime         @updatedAt
 
   @@unique([title, company, location], name: "JobUniqueIndex")
 }
 
 model JobsTemp {
-  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                   String           @id @default(auto()) @map("_id") @db.ObjectId
   title                String
   company              String
   location             String
   jobLink              String
   postedDate           String?
-  hiringStatus         String?  @default("Actively hiring")
+  hiringStatus         String?          @default("Actively hiring")
   salary               String?
   keyword              String?
   companyLogoURL       String?
@@ -49,14 +64,14 @@ model JobsTemp {
   jobType              JobType?
   workMode             WorkMode?
   experienceLevel      ExperienceLevel?
-  isXPosted            Boolean  @default(false)
-  isTelegramPosted     Boolean  @default(false)
-  isLinkedInPosted     Boolean  @default(false)
-  isInstagramPosted    Boolean  @default(false)
-  isSimilarJobsUpdated Boolean  @default(false)
-  visitCount           Int      @default(0)
+  isXPosted            Boolean          @default(false)
+  isTelegramPosted     Boolean          @default(false)
+  isLinkedInPosted     Boolean          @default(false)
+  isInstagramPosted    Boolean          @default(false)
+  isSimilarJobsUpdated Boolean          @default(false)
+  visitCount           Int              @default(0)
   scrapedAt            String
-  updatedAt            DateTime @updatedAt
+  updatedAt            DateTime         @updatedAt
 
   @@unique([title, company, location], name: "JobUniqueIndex")
 }
@@ -69,6 +84,11 @@ model MetaData {
   totalSimilarJobsUpdated Int
 
   createdAt DateTime @default(now())
+}
+
+enum UserType {
+  Standard
+  Premium
 }
 
 enum JobType {

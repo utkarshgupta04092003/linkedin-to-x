@@ -15,3 +15,6 @@ Add env
 ### Others
 
 -   [ ] Think about how to handle search in website for particular jobs, react, angular and web development all comes in one category (use some model to get the keywords and store in db)
+
+Tunnel Start - lt --port 3000
+Tunnel Password- curl https://loca.lt/mytunnelpassword
