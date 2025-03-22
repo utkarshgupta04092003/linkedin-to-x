@@ -48,6 +48,8 @@ model Jobs {
   visitCount           Int              @default(0)
   scrapedAt            String
   updatedAt            DateTime         @updatedAt
+  savedJobs            SavedJobs[]
+  trackJobs            TrackJobs[]
 
   @@unique([title, company, location], name: "JobUniqueIndex")
 }
@@ -60,6 +62,7 @@ model SavedJobs {
   notes       String?
   tags        String[] @default([])
   user        User     @relation(fields: [clerkUserId], references: [clerkUserId])
+  jobs        Jobs     @relation(fields: [jobId], references: [id])
 
   @@unique([clerkUserId, jobId])
 }
@@ -73,6 +76,7 @@ model TrackJobs {
   notes       String?
   tags        String[]       @default([])
   user        User           @relation(fields: [clerkUserId], references: [clerkUserId])
+  jobs        Jobs           @relation(fields: [jobId], references: [id])
 
   @@unique([clerkUserId, jobId])
 }
