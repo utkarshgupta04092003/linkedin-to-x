@@ -48,7 +48,6 @@ async function getSavedJobs(jobId: string | null) {
     const user = await currentUser()
     const clerkUserId = user?.id
     if (!clerkUserId) throw new Error("Invalid user")
-    console.log("clerkUserId", clerkUserId)
     let savedJobs
     if (jobId) {
         savedJobs = await prisma.savedJobs.findMany({

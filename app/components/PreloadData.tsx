@@ -9,7 +9,6 @@ export default function PreloadData() {
     const user = useUser()
     useEffect(() => {
         user.isSignedIn && preload("/api/v1/saved-jobs", fetcher)
-        console.log(user)
     }, [user])
     return null
 }

@@ -33,30 +33,18 @@ export async function POST(req: Request) {
             { status: 400 }
         )
     }
-
-    const { id } = evt.data
     const eventType = evt.type
-
-    // console.log(`Webhook with an ID of ${id} and type of ${eventType}`)
-    // console.log("Webhook body:", body)
     // Handling 'user.created' event
     if (eventType === "user.created") {
         try {
             const { email_addresses, primary_email_address_id } = evt.data
-            // console.log(evt.data)
-            // Safely find the primary email address
             const primaryEmail = email_addresses.find(
                 (email) => email.id === primary_email_address_id
             )
-            // console.log("Primary email:", primaryEmail)
-            // console.log("Email addresses:", primaryEmail?.email_address)
             if (!primaryEmail) {
-                console.error("No primary email found")
                 return NextResponse.json({ message: "No primary email found" }, { status: 400 })
             }
-
-            // Create the user in the database
-            const newUser = await prisma.user.create({
+            await prisma.user.create({
                 data: {
                     clerkUserId: evt.data.id!,
                     email: primaryEmail.email_address,
@@ -67,9 +55,7 @@ export async function POST(req: Request) {
                     updatedAt: new Date(),
                 },
             })
-            console.log("New user created:", newUser)
         } catch (error) {
-            // console.error("Error creating user in database:", error)
             return NextResponse.json({ message: "Error creating user" }, { status: 500 })
         }
     }

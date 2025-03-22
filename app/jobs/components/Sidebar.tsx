@@ -1,4 +1,4 @@
-import { FILTER_GROUP, LOCATION_KEY, POSTED_DATE_RANGE_KEY } from "@/app/_lib/config/globals"
+import { FILTER_GROUP, POSTED_DATE_RANGE_KEY } from "@/app/_lib/config/globals"
 import { FilterState } from "@/app/_lib/declarations/globals"
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline"
 import React from "react"
@@ -113,15 +113,6 @@ export default function Sidebar({
                                                 </span>
                                             </label>
                                         ))}
-                                        {/* TODO: write a way to open searchbar for location */}
-                                        {currentFilter.key === LOCATION_KEY && (
-                                            <div
-                                                onClick={() => console.log(currentFilter)}
-                                                className="flex items-center text-sm text-blue-500 cursor-pointer select-none"
-                                            >
-                                                See more
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             )
