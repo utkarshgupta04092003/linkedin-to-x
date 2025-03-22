@@ -1,23 +1,68 @@
+import { SAVED_JOBS_ROUTE } from "@/app/_lib/config/endpoint"
+import { useUser } from "@clerk/nextjs"
 import {
     BookmarkIcon,
     CalendarIcon,
     CurrencyDollarIcon,
     MapPinIcon,
 } from "@heroicons/react/24/outline"
+import { BookmarkIcon as BookmarkFillIcon } from "@heroicons/react/24/solid"
 import { Jobs } from "@prisma/client"
+import axios from "axios"
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
+import useSWR, { mutate } from "swr"
 
 interface JobCardProps {
     job: Jobs
 }
 
+type SavedJobs = {
+    jobId: string
+    savedAt: string
+}
+
 export default function JobCard({ job }: JobCardProps) {
+    const user = useUser()
+    const { data: savedJobs } = useSWR<SavedJobs[]>(user.isSignedIn ? SAVED_JOBS_ROUTE : null)
+    const [savedJobsData, setSavedJobsData] = useState<SavedJobs[]>(savedJobs || [])
+    useEffect(() => {
+        savedJobs && setSavedJobsData(savedJobs || [])
+    }, [savedJobs])
+    const handleSaveJob = async () => {
+        if (!user.isSignedIn) {
+            toast.error("Please sign in to save jobs")
+            return
+        }
+        const jobToSave = { jobId: job.id, savedAt: new Date().toISOString() }
+        const isAlreadySaved = savedJobs?.find((savedJob) => savedJob.jobId === job.id)
+        const optimisticData = isAlreadySaved
+            ? savedJobs?.filter((j) => j.jobId !== job.id)
+            : [...(savedJobs || []), jobToSave]
+        try {
+            const requestFn = isAlreadySaved
+                ? async () => {
+                      const res = await axios.delete(`${SAVED_JOBS_ROUTE}?id=${job.id}`)
+                      toast.success(res.data.message)
+                  }
+                : async () => {
+                      const res = await axios.post(SAVED_JOBS_ROUTE, { id: job.id })
+                      toast.success(res.data.message)
+                  }
+            await mutate(SAVED_JOBS_ROUTE, requestFn, { optimisticData })
+            setSavedJobsData(optimisticData || [])
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || "Something went wrong")
+        }
+    }
+
     return (
         <div className=" dark:bg-bg-secondary-dark rounded-rounded-primary shadow-sm border border-border-primary-light dark:border-none p-6 hover:shadow-md transition-shadow">
             <div className="flex items-start gap-4">
                 <Image
-                    src={job.companyLogoURL || "/placeholder.svg"}
+                    src={job.companyLogoURL || ""}
                     width={48}
                     height={48}
                     unoptimized={true}
@@ -40,8 +85,15 @@ export default function JobCard({ job }: JobCardProps) {
                                 {job.company}
                             </p>
                         </div>
-                        <div className="flex items-center gap-2 cursor-pointer">
-                            <BookmarkIcon className="h-5 w-5" />
+                        <div
+                            className="flex items-center gap-2 cursor-pointer"
+                            onClick={handleSaveJob}
+                        >
+                            {savedJobsData?.map((job) => job.jobId).includes(job.id) ? (
+                                <BookmarkFillIcon className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+                            ) : (
+                                <BookmarkIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                            )}
                         </div>
                         {/* <div className="flex items-center gap-2">
                 {job.isLinkedInPosted && (
