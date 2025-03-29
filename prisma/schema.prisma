@@ -16,7 +16,6 @@ model User {
   email               String      @unique
   emailVerified       Boolean     @default(false)
   imageUrl            String?
-  profileImageUrl     String?
   userType            UserType
   subscriptionEndDate DateTime?
   createdAt           DateTime
