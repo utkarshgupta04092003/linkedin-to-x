@@ -1,4 +1,4 @@
-import { ExperienceLevel, Jobs, JobType, WorkMode } from "@prisma/client"
+import { ExperienceLevel, Jobs, JobType, TrackJobs, WorkMode } from "@prisma/client"
 import {
     EXPERIENCE_LEVEL_KEY,
     JOB_TYPE_KEY,
@@ -45,4 +45,8 @@ export type GenerateURLParameters = {
     jobType: string | null
     workMode: string | null
     experienceLevel: string | null
+}
+
+export type EnrichedTrackJobs = TrackJobs & {
+    jobs: Jobs
 }

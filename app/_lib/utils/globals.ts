@@ -101,3 +101,11 @@ export const convertToBold = (text: string) => {
         })
         .join("")
 }
+
+export function startCase(str: string): string {
+    return str
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .toLowerCase()
+        .replace(/\b\w/g, (char) => char.toUpperCase())
+}

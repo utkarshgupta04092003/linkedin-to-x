@@ -67,15 +67,16 @@ model SavedJobs {
 }
 
 model TrackJobs {
-  id          String         @id @default(auto()) @map("_id") @db.ObjectId
-  clerkUserId String
-  jobId       String         @db.ObjectId
-  appliedAt   DateTime       @default(now())
-  jobStatus   TrackJobStatus
-  notes       String?
-  tags        String[]       @default([])
-  user        User           @relation(fields: [clerkUserId], references: [clerkUserId])
-  jobs        Jobs           @relation(fields: [jobId], references: [id])
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId     String
+  jobId           String         @db.ObjectId
+  appliedAt       DateTime       @default(now())
+  jobStatus       TrackJobStatus
+  statusUpdatedAt DateTime?
+  notes           String?
+  tags            String[]       @default([])
+  user            User           @relation(fields: [clerkUserId], references: [clerkUserId])
+  jobs            Jobs           @relation(fields: [jobId], references: [id])
 
   @@unique([clerkUserId, jobId])
 }
