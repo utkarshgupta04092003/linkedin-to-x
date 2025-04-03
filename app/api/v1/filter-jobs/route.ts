@@ -105,6 +105,23 @@ async function getJobs(
                 scrapedAt: "desc",
             },
         ],
+        select: {
+            id: true,
+            title: true,
+            company: true,
+            location: true,
+            jobLink: true,
+            postedDate: true,
+            hiringStatus: true,
+            salary: true,
+            keyword: true,
+            companyLogoURL: true,
+            companyPageURL: true,
+            jobType: true,
+            workMode: true,
+            experienceLevel: true,
+            dataSource: true,
+        },
     })
     const count = await prisma.jobs.count({
         where,

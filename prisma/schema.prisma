@@ -39,6 +39,7 @@ model Jobs {
   jobType              JobType?
   workMode             WorkMode?
   experienceLevel      ExperienceLevel?
+  dataSource           String
   isXPosted            Boolean          @default(false)
   isTelegramPosted     Boolean          @default(false)
   isLinkedInPosted     Boolean          @default(false)
@@ -96,6 +97,7 @@ model JobsTemp {
   jobType              JobType?
   workMode             WorkMode?
   experienceLevel      ExperienceLevel?
+  dataSource           String
   isXPosted            Boolean          @default(false)
   isTelegramPosted     Boolean          @default(false)
   isLinkedInPosted     Boolean          @default(false)

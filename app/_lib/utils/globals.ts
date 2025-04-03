@@ -1,58 +1,7 @@
 import { PrismaClient } from "@prisma/client"
-import moment from "moment"
-import { ALLOWED_TIME_DIFF } from "../config/globals"
 import { TWITTER_HASHTAGS } from "../config/twitter"
-import { GenerateURLParameters, LinkedinScrapeJob } from "../declarations/globals"
 
 export const prisma = new PrismaClient()
-
-export const generateURL = ({
-    keyword,
-    location,
-    currentPage,
-    jobType,
-    workMode,
-    experienceLevel,
-}: GenerateURLParameters): string => {
-    let params = new URLSearchParams()
-    params.append("keywords", keyword)
-    params.append("location", location)
-    params.append("page", currentPage.toString())
-    params.append("position", "1")
-    params.append("pageNum", "0")
-    params.append("start", (currentPage * 10).toString())
-    params.append("sortBy", "DD")
-    if (jobType) params.append("f_JT", jobType)
-    if (workMode) params.append("f_WT", workMode)
-    if (experienceLevel) params.append("f_E", experienceLevel)
-
-    console.log(
-        `https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?${params.toString()}`
-    )
-    return `https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?${params.toString()}`
-}
-
-export const filterData = (data: LinkedinScrapeJob[]) => {
-    const filteredData = data.filter((job) => {
-        const today = moment()
-        const date2 = moment(job.postedDate)
-        const diff = today.diff(date2, "days")
-        return diff < ALLOWED_TIME_DIFF
-    })
-    return filteredData
-}
-
-export const formatResponseMessage = (
-    count: number,
-    timeTaken: number,
-    others?: { [key: string]: any }
-) => {
-    return {
-        message: "Total " + count + " rows updated in DB",
-        timeTaken,
-        ...others,
-    }
-}
 
 export const generateShortURL = (id: string) => {
     const url = `${process.env.DOMAIN}/shortly/${id}`
