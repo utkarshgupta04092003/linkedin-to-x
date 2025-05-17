@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id                  String      @id @default(auto()) @map("_id") @db.ObjectId
+  id                  String      @id @default(uuid())
   clerkUserId         String      @unique
   firstName           String
   lastName            String
@@ -18,14 +18,14 @@ model User {
   imageUrl            String?
   userType            UserType
   subscriptionEndDate DateTime?
-  createdAt           DateTime
-  updatedAt           DateTime
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
   SavedJobs           SavedJobs[]
   TrackJobs           TrackJobs[]
 }
 
 model Jobs {
-  id                   String           @id @default(auto()) @map("_id") @db.ObjectId
+  id                   String           @id @default(uuid())
   title                String
   company              String
   location             String
@@ -54,10 +54,76 @@ model Jobs {
   @@unique([title, company, location], name: "JobUniqueIndex")
 }
 
+model HackerRankJobs {
+  id                  String           @id @default(uuid())
+  hackerRankJobId     Int
+  jobTitle            String
+  companyName         String
+  jobUrl              String?
+  logo                String?
+  priority            Int              @default(0)
+  country             String?
+  state               String?
+  city                String?
+  skills              String[]
+  overallSkills       String[]
+  role                String?
+  location            String?
+  jobType             JobType?
+  workMode            WorkMode?
+  experienceLevel     ExperienceLevel?
+  salary              String?
+  experience          String?
+  showInJobBoard      Boolean          @default(false)
+  companyWebsite      String?
+  calendlyLink        String?
+  eligibilityCriteria String?
+  isEligible          Boolean          @default(false)
+  supportsScheduling  Boolean          @default(false)
+  wishlisted          Boolean?
+  uploadLimitLeft     Int?
+  visibilityStartDate DateTime?
+  visibilityEndDate   DateTime? // iske pahle ka data main table me nhi save krna hi
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  description         String?
+  qualifications      String?
+  isDetailFetched     Boolean          @default(false)
+  isSavedToJob        Boolean          @default(false)
+
+  @@index([hackerRankJobId])
+  @@index([companyName, jobTitle, country])
+}
+
+model NaukriJobs {
+  id               String           @id @default(uuid())
+  jobId            String           @unique
+  title            String
+  jobLink          String
+  companyLogo      String?
+  company          String
+  companyLink      String?
+  experience       String?
+  location         String
+  salary           String?
+  postedDateString String?
+  postedDate       String?
+  jobDescription   String
+  skills           String[]
+  hiringStatus     String?          @default("Actively hiring")
+  keyword          String?
+  jobType          JobType?
+  workMode         WorkMode?
+  experienceLevel  ExperienceLevel?
+  scrapedAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  isSavedToJob     Boolean          @default(false)
+}
+
 model SavedJobs {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(uuid())
   clerkUserId String
-  jobId       String   @db.ObjectId
+  jobId       String
   savedAt     DateTime @default(now())
   notes       String?
   tags        String[] @default([])
@@ -68,9 +134,9 @@ model SavedJobs {
 }
 
 model TrackJobs {
-  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  id              String         @id @default(uuid())
   clerkUserId     String
-  jobId           String         @db.ObjectId
+  jobId           String
   appliedAt       DateTime       @default(now())
   jobStatus       TrackJobStatus
   statusUpdatedAt DateTime?
@@ -83,7 +149,7 @@ model TrackJobs {
 }
 
 model JobsTemp {
-  id                   String           @id @default(auto()) @map("_id") @db.ObjectId
+  id                   String           @id @default(uuid())
   title                String
   company              String
   location             String
@@ -111,13 +177,11 @@ model JobsTemp {
 }
 
 model MetaData {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id                      String   @id @default(uuid())
   totalJobs               Int
   totalXPostedJobs        Int
   totalSimilarJobsUpdated Int
-
-  createdAt DateTime @default(now())
+  createdAt               DateTime @default(now())
 }
 
 enum UserType {
