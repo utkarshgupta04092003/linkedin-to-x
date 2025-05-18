@@ -8,180 +8,191 @@ datasource db {
 }
 
 model User {
-  id                  String      @id @default(uuid())
-  clerkUserId         String      @unique
-  firstName           String
-  lastName            String
-  username            String?
-  email               String      @unique
-  emailVerified       Boolean     @default(false)
-  imageUrl            String?
-  userType            UserType
-  subscriptionEndDate DateTime?
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
+  id                  String      @id @default(uuid()) @map("id")
+  clerkUserId         String      @unique @map("clerk_user_id")
+  firstName           String      @map("first_name")
+  lastName            String      @map("last_name")
+  username            String?     @map("username")
+  email               String      @unique @map("email")
+  emailVerified       Boolean     @default(false) @map("email_verified")
+  imageUrl            String?     @map("image_url")
+  userType            UserType    @map("user_type")
+  subscriptionEndDate DateTime?   @map("subscription_end_date")
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @updatedAt @map("updated_at")
   SavedJobs           SavedJobs[]
   TrackJobs           TrackJobs[]
+
+  @@map("user")
 }
 
 model Jobs {
-  id                   String           @id @default(uuid())
-  title                String
-  company              String
-  location             String
-  jobLink              String
-  postedDate           String?
-  hiringStatus         String?          @default("Actively hiring")
-  salary               String?
-  keyword              String?
-  companyLogoURL       String?
-  companyPageURL       String?
-  jobType              JobType?
-  workMode             WorkMode?
-  experienceLevel      ExperienceLevel?
-  dataSource           String
-  isXPosted            Boolean          @default(false)
-  isTelegramPosted     Boolean          @default(false)
-  isLinkedInPosted     Boolean          @default(false)
-  isInstagramPosted    Boolean          @default(false)
-  isSimilarJobsUpdated Boolean          @default(false)
-  visitCount           Int              @default(0)
-  scrapedAt            String
-  updatedAt            DateTime         @updatedAt
+  id                   String           @id @default(uuid()) @map("id")
+  title                String           @map("title")
+  company              String           @map("company")
+  location             String           @map("location")
+  jobLink              String           @map("job_link")
+  postedDate           String?          @map("posted_date")
+  hiringStatus         String?          @default("Actively hiring") @map("hiring_status")
+  salary               String?          @map("salary")
+  keyword              String?          @map("keyword")
+  companyLogoURL       String?          @map("company_logo_url")
+  companyPageURL       String?          @map("company_page_url")
+  jobType              JobType?         @map("job_type")
+  workMode             WorkMode?        @map("work_mode")
+  experienceLevel      ExperienceLevel? @map("experience_level")
+  dataSource           String           @map("data_source")
+  isXPosted            Boolean          @default(false) @map("is_x_posted")
+  isTelegramPosted     Boolean          @default(false) @map("is_telegram_posted")
+  isLinkedInPosted     Boolean          @default(false) @map("is_linked_in_posted")
+  isInstagramPosted    Boolean          @default(false) @map("is_instagram_posted")
+  isSimilarJobsUpdated Boolean          @default(false) @map("is_similar_jobs_updated")
+  visitCount           Int              @default(0) @map("visit_count")
+  scrapedAt            String           @map("scraped_at")
+  updatedAt            DateTime         @updatedAt @map("updated_at")
   savedJobs            SavedJobs[]
   trackJobs            TrackJobs[]
 
   @@unique([title, company, location], name: "JobUniqueIndex")
+  @@map("jobs")
 }
 
 model HackerRankJobs {
-  id                  String           @id @default(uuid())
-  hackerRankJobId     Int
-  jobTitle            String
-  companyName         String
-  jobUrl              String?
-  logo                String?
-  priority            Int              @default(0)
-  country             String?
-  state               String?
-  city                String?
-  skills              String[]
-  overallSkills       String[]
-  role                String?
-  location            String?
-  jobType             JobType?
-  workMode            WorkMode?
-  experienceLevel     ExperienceLevel?
-  salary              String?
-  experience          String?
-  showInJobBoard      Boolean          @default(false)
-  companyWebsite      String?
-  calendlyLink        String?
-  eligibilityCriteria String?
-  isEligible          Boolean          @default(false)
-  supportsScheduling  Boolean          @default(false)
-  wishlisted          Boolean?
-  uploadLimitLeft     Int?
-  visibilityStartDate DateTime?
-  visibilityEndDate   DateTime? // iske pahle ka data main table me nhi save krna hi
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
-  description         String?
-  qualifications      String?
-  isDetailFetched     Boolean          @default(false)
-  isSavedToJob        Boolean          @default(false)
+  id                  String           @id @default(uuid()) @map("id")
+  hackerRankJobId     Int              @map("hacker_rank_job_id")
+  jobTitle            String           @map("job_title")
+  companyName         String           @map("company_name")
+  jobUrl              String?          @map("job_url")
+  logo                String?          @map("logo")
+  priority            Int              @default(0) @map("priority")
+  country             String?          @map("country")
+  state               String?          @map("state")
+  city                String?          @map("city")
+  skills              String[]         @map("skills")
+  overallSkills       String[]         @map("overall_skills")
+  role                String?          @map("role")
+  location            String?          @map("location")
+  jobType             JobType?         @map("job_type")
+  workMode            WorkMode?        @map("work_mode")
+  experienceLevel     ExperienceLevel? @map("experience_level")
+  salary              String?          @map("salary")
+  experience          String?          @map("experience")
+  showInJobBoard      Boolean          @default(false) @map("show_in_job_board")
+  companyWebsite      String?          @map("company_website")
+  calendlyLink        String?          @map("calendly_link")
+  eligibilityCriteria String?          @map("eligibility_criteria")
+  isEligible          Boolean          @default(false) @map("is_eligible")
+  supportsScheduling  Boolean          @default(false) @map("supports_scheduling")
+  wishlisted          Boolean?         @map("wishlisted")
+  uploadLimitLeft     Int?             @map("upload_limit_left")
+  visibilityStartDate DateTime?        @map("visibility_start_date")
+  visibilityEndDate   DateTime?        @map("visibility_end_date")
+  createdAt           DateTime         @default(now()) @map("created_at")
+  updatedAt           DateTime         @updatedAt @map("updated_at")
+  description         String?          @map("description")
+  qualifications      String?          @map("qualifications")
+  isDetailFetched     Boolean          @default(false) @map("is_detail_fetched")
+  isSavedToJob        Boolean          @default(false) @map("is_saved_to_job")
 
   @@index([hackerRankJobId])
   @@index([companyName, jobTitle, country])
+  @@map("hacker_rank_jobs")
 }
 
 model NaukriJobs {
-  id               String           @id @default(uuid())
-  jobId            String           @unique
-  title            String
-  jobLink          String
-  companyLogo      String?
-  company          String
-  companyLink      String?
-  experience       String?
-  location         String
-  salary           String?
-  postedDateString String?
-  postedDate       String?
-  jobDescription   String
-  skills           String[]
-  hiringStatus     String?          @default("Actively hiring")
-  keyword          String?
-  jobType          JobType?
-  workMode         WorkMode?
-  experienceLevel  ExperienceLevel?
-  scrapedAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  isSavedToJob     Boolean          @default(false)
+  id               String           @id @default(uuid()) @map("id")
+  jobId            String           @unique @map("job_id")
+  title            String           @map("title")
+  jobLink          String           @map("job_link")
+  companyLogo      String?          @map("company_logo")
+  company          String           @map("company")
+  companyLink      String?          @map("company_link")
+  experience       String?          @map("experience")
+  location         String           @map("location")
+  salary           String?          @map("salary")
+  postedDateString String?          @map("posted_date_string")
+  postedDate       String?          @map("posted_date")
+  jobDescription   String           @map("job_description")
+  skills           String[]         @map("skills")
+  hiringStatus     String?          @default("Actively hiring") @map("hiring_status")
+  keyword          String?          @map("keyword")
+  jobType          JobType?         @map("job_type")
+  workMode         WorkMode?        @map("work_mode")
+  experienceLevel  ExperienceLevel? @map("experience_level")
+  scrapedAt        DateTime         @default(now()) @map("scraped_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  isSavedToJob     Boolean          @default(false) @map("is_saved_to_job")
+
+  @@map("naukri_jobs")
 }
 
 model SavedJobs {
-  id          String   @id @default(uuid())
-  clerkUserId String
-  jobId       String
-  savedAt     DateTime @default(now())
-  notes       String?
-  tags        String[] @default([])
+  id          String   @id @default(uuid()) @map("id")
+  clerkUserId String   @map("clerk_user_id")
+  jobId       String   @map("job_id")
+  savedAt     DateTime @default(now()) @map("saved_at")
+  notes       String?  @map("notes")
+  tags        String[] @default([]) @map("tags")
   user        User     @relation(fields: [clerkUserId], references: [clerkUserId])
   jobs        Jobs     @relation(fields: [jobId], references: [id])
 
   @@unique([clerkUserId, jobId])
+  @@map("saved_jobs")
 }
 
 model TrackJobs {
-  id              String         @id @default(uuid())
-  clerkUserId     String
-  jobId           String
-  appliedAt       DateTime       @default(now())
-  jobStatus       TrackJobStatus
-  statusUpdatedAt DateTime?
-  notes           String?
-  tags            String[]       @default([])
+  id              String         @id @default(uuid()) @map("id")
+  clerkUserId     String         @map("clerk_user_id")
+  jobId           String         @map("job_id")
+  appliedAt       DateTime       @default(now()) @map("applied_at")
+  jobStatus       TrackJobStatus @map("job_status")
+  statusUpdatedAt DateTime?      @map("status_updated_at")
+  notes           String?        @map("notes")
+  tags            String[]       @default([]) @map("tags")
   user            User           @relation(fields: [clerkUserId], references: [clerkUserId])
   jobs            Jobs           @relation(fields: [jobId], references: [id])
 
   @@unique([clerkUserId, jobId])
+  @@map("track_jobs")
 }
 
 model JobsTemp {
-  id                   String           @id @default(uuid())
-  title                String
-  company              String
-  location             String
-  jobLink              String
-  postedDate           String?
-  hiringStatus         String?          @default("Actively hiring")
-  salary               String?
-  keyword              String?
-  companyLogoURL       String?
-  companyPageURL       String?
-  jobType              JobType?
-  workMode             WorkMode?
-  experienceLevel      ExperienceLevel?
-  dataSource           String
-  isXPosted            Boolean          @default(false)
-  isTelegramPosted     Boolean          @default(false)
-  isLinkedInPosted     Boolean          @default(false)
-  isInstagramPosted    Boolean          @default(false)
-  isSimilarJobsUpdated Boolean          @default(false)
-  visitCount           Int              @default(0)
-  scrapedAt            String
-  updatedAt            DateTime         @updatedAt
+  id                   String           @id @default(uuid()) @map("id")
+  title                String           @map("title")
+  company              String           @map("company")
+  location             String           @map("location")
+  jobLink              String           @map("job_link")
+  postedDate           String?          @map("posted_date")
+  hiringStatus         String?          @default("Actively hiring") @map("hiring_status")
+  salary               String?          @map("salary")
+  keyword              String?          @map("keyword")
+  companyLogoURL       String?          @map("company_logo_url")
+  companyPageURL       String?          @map("company_page_url")
+  jobType              JobType?         @map("job_type")
+  workMode             WorkMode?        @map("work_mode")
+  experienceLevel      ExperienceLevel? @map("experience_level")
+  dataSource           String           @map("data_source")
+  isXPosted            Boolean          @default(false) @map("is_x_posted")
+  isTelegramPosted     Boolean          @default(false) @map("is_telegram_posted")
+  isLinkedInPosted     Boolean          @default(false) @map("is_linked_in_posted")
+  isInstagramPosted    Boolean          @default(false) @map("is_instagram_posted")
+  isSimilarJobsUpdated Boolean          @default(false) @map("is_similar_jobs_updated")
+  visitCount           Int              @default(0) @map("visit_count")
+  scrapedAt            String           @map("scraped_at")
+  updatedAt            DateTime         @updatedAt @map("updated_at")
 
   @@unique([title, company, location], name: "JobUniqueIndex")
+  @@map("jobs_temp")
 }
 
 model MetaData {
-  id                      String   @id @default(uuid())
-  totalJobs               Int
-  totalXPostedJobs        Int
-  totalSimilarJobsUpdated Int
-  createdAt               DateTime @default(now())
+  id                      String   @id @default(uuid()) @map("id")
+  totalJobs               Int      @map("total_jobs")
+  totalXPostedJobs        Int      @map("total_x_posted_jobs")
+  totalSimilarJobsUpdated Int      @map("total_similar_jobs_updated")
+  createdAt               DateTime @default(now()) @map("created_at")
+
+  @@map("meta_data")
 }
 
 enum UserType {
